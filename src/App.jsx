@@ -46,7 +46,7 @@ export default function App() {
           target="_blank"
           className="float-btn"
         >
-          <img src="/phone.png" alt="Phone" />
+          <img src="/phone.webp" alt="Gọi điện" loading="lazy" />
         </a>
 
         <a
@@ -54,7 +54,7 @@ export default function App() {
           target="_blank"
           className="float-btn"
         >
-          <img src="/messenger.png" alt="Messenger" />
+          <img src="/messenger.webp" alt="Chat Messenger" loading="lazy" />
         </a>
 
         <a
@@ -62,7 +62,7 @@ export default function App() {
           target="_blank"
           className="float-btn"
         >
-          <img src="/zalo.png" alt="Zalo" />
+          <img src="/zalo.webp" alt="Chat Zalo" loading="lazy" />
         </a>
       </div>
     </>
