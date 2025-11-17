@@ -1,0 +1,249 @@
+:root {
+  --primary: #0a8c7d;
+  --primary-light: #15b6a8;
+}
+
+/* HEADER */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  padding: 8px 18px !important;
+  color: white;
+}
+
+/* LOGO */
+.site-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: white;
+  padding: 4px;
+}
+
+/* ===== DESKTOP HEADER ===== */
+.header-desktop {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Desktop Menu with Bubble Hover Effect */
+.hd-menu {
+  display: flex;
+  gap:26px;
+}
+
+.hd-menu a {
+  padding: 8px 16px;
+  position: relative;
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  transition: 
+    transform 0.25s cubic-bezier(.22,.68,.43,1.38),
+    background 0.25s,
+    box-shadow 0.25s,
+    color 0.25s;
+}
+
+/* Hiệu ứng nổi nhẹ khi rê chuột vào khu vực menu */
+.hd-menu:hover a {
+  transform: scale(1.03);          /* nổi nhẹ tất cả */
+  opacity: 0.85;
+}
+
+/* Nút đang được hover sẽ nổi mạnh hơn */
+.hd-menu a:hover {
+  transform: translateY(-5px) scale(1.12); /* nổi mạnh */
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.28);
+  opacity: 1;
+}
+
+/* Underline effect */
+.hd-menu a::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  bottom: 4px;
+  width: 0%;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.hd-menu a:hover::after {
+  width: 65%;
+}
+/* Hotline */
+.hotline-btn {
+  background: white;
+  color: var(--primary);
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ===== MOBILE HEADER ===== */
+.header-mobile {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-hotline {
+  flex: 1;
+  text-align: center;
+  max-width: 180px;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  background: rgba(255,255,255,0.1);
+}
+
+.hamburger span {
+  width: 60%;
+  height: 3px;
+  background: white;
+  border-radius: 3px;
+}
+
+/* ACTIVE X STATE */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ===== iOS BOTTOM SHEET ===== */
+.mobile-nav {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 65vh;
+
+  background: #ffffff; /* không xuyên */
+  border-radius: 26px 26px 0 0;
+  box-shadow: 0 -20px 40px rgba(0,0,0,0.18);
+
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  transform: translateY(100%);
+  transition: all 0.45s cubic-bezier(.34,1.56,.64,1);
+  z-index: 250;
+}
+
+/* Drag bar */
+.mobile-nav::before {
+  content: "";
+  width: 40px;
+  height: 5px;
+  background: #cfcfcf;
+  border-radius: 3px;
+  margin: 0 auto;
+  margin-bottom: 14px;
+}
+
+/* When opened */
+.mobile-nav.show {
+  transform: translateY(0);
+}
+
+/* Mobile menu items */
+.mobile-nav a {
+  font-size: 1.2rem;
+  padding: 12px 0;
+  color: #111;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.10);
+  padding: 4px;
+  border-radius: 999px;
+  gap: 4px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Button style */
+.lang-switch button {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  transition:
+    background 0.25s,
+    color 0.25s,
+    transform 0.25s cubic-bezier(.22,.68,.43,1.38);
+}
+
+/* Bubble hover */
+.lang-switch button:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Active button (toggle ON) */
+.lang-switch button.active {
+  background: rgba(255,255,255,0.85);
+  color: #0A8C7D; /* màu chủ đạo */
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .header-desktop {
+    display: none;
+  }
+
+  .header-mobile {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .lang-switch {
+    display: none !important;
+  }
+}
