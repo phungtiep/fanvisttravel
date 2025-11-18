@@ -20,7 +20,7 @@ export default function BookingForm() {
     const data = {
       fullName: form.fullName.value.trim(),
       phone: form.phone.value.trim(),
-      route: form.route.value,
+      route: form.route,
       carType: form.carType.value,
       pickupPlace: form.pickupPlace.value.trim(),
       dropoffPlace: form.dropoffPlace.value.trim(),

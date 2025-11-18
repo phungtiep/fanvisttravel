@@ -33,7 +33,9 @@ export default function Header() {
         {/* ===== DESKTOP HEADER ===== */}
         <div className="header-desktop">
           <div className="hd-left">
-            <img src="/logo.webp" className="site-logo" alt="Fanvist Travel" />
+            <a href="/">
+              <img src="/logo.webp" className="site-logo" alt="Fanvist Travel" />
+            </a>
           </div>
 
           <nav className="hd-menu">
@@ -83,7 +85,9 @@ export default function Header() {
             📞 0844 232 144
           </a>
 
-          <img src="/logo.webp" className="site-logo mobile-logo" alt="Fanvist Travel" />
+          <a href="/">
+            <img src="/logo.webp" className="site-logo mobile-logo" alt="Fanvist Travel" />
+          </a>
         </div>
       </header>
 
