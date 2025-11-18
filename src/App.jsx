@@ -46,15 +46,25 @@ export default function App() {
           target="_blank"
           className="float-btn"
         >
-          <img src="/phone.webp" alt="Gọi điện" loading="lazy" />
+          <img title="Gọi ngay" src="/phone.webp" alt="Gọi điện" loading="lazy" />
+        </a>
+
+        <a
+          href="https://wa.me/message/KYYD2CHTTITCL1"
+          target="_blank"
+          className="float-btn"
+          
+        >
+          <img title="Chat Whatapp" src="/whatapp.webp" alt="Chat Whatapp" loading="lazy" />
         </a>
 
         <a
           href="https://m.me/thuexesaigonphanthietmuine"
           target="_blank"
           className="float-btn"
+          
         >
-          <img src="/messenger.webp" alt="Chat Messenger" loading="lazy" />
+          <img title="Chat Messenger" src="/messenger.webp" alt="Chat Messenger" loading="lazy" />
         </a>
 
         <a
@@ -62,7 +72,7 @@ export default function App() {
           target="_blank"
           className="float-btn"
         >
-          <img src="/zalo.webp" alt="Chat Zalo" loading="lazy" />
+          <img title="Chat Zalo" src="/zalo.webp" alt="Chat Zalo" loading="lazy" />
         </a>
       </div>
     </>
