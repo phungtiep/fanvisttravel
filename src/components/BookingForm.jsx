@@ -1,10 +1,10 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function BookingForm() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-   const [success, setSuccess] = useState(false); 
+  const [success, setSuccess] = useState(false); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
