@@ -13,7 +13,9 @@ export default async function handler(req, res) {
 🚗 Tuyến: ${data.route}  
 🚘 Loại xe: ${data.carType}  
 📍 Điểm đón: ${data.pickupPlace}  
-🏁 Điểm trả: ${data.dropoffPlace}  
+🏁 Điểm trả: ${data.dropoffPlace}
+👨‍👩‍👧 Người lớn: ${data.adultCount}
+🧒 Trẻ em: ${data.childCount}  
 📅 Ngày đi: ${data.date}  
 ⏰ Giờ: ${data.time}  
 📝 Ghi chú: ${data.note || "(không có)"}  

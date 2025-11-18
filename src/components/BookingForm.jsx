@@ -1,10 +1,16 @@
-import React,{ useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function BookingForm() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false); 
+  const [success, setSuccess] = useState(false);
+  const [adultCount, setAdultCount] = useState(1);
+  const [childCount, setChildCount] = useState(0);
+  const inc = (setter, max = 50) => setter((prev) => Math.min(max, prev + 1));
+  const dec = (setter, min = 0) => setter((prev) => Math.max(min, prev - 1));
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +27,8 @@ export default function BookingForm() {
       date: form.date.value,
       time: form.time.value,
       note: form.note.value.trim(),
+      adultCount,
+      childCount,
     };
 
     console.log('Booking data:', data);
@@ -37,11 +45,11 @@ export default function BookingForm() {
 
       const result = await res.json();
 
-      
+
 
       if (result.status === "done") {
         // alert("Đã gửi yêu cầu thành công!");
-        setSuccess(true); 
+        setSuccess(true);
         form.reset();
         setTimeout(() => setSuccess(false), 2000);
       } else {
@@ -154,6 +162,29 @@ export default function BookingForm() {
                   />
                 </div>
               </div>
+
+              <div className="form-row">
+                {/* Người lớn */}
+                <div>
+                  <label>{t("booking.adult")}</label>
+                  <div className="number-input">
+                    <button type="button" onClick={() => dec(setAdultCount, 1)}>-</button>
+                    <span>{adultCount}</span>
+                    <button type="button" onClick={() => inc(setAdultCount)}>+</button>
+                  </div>
+                </div>
+
+                {/* Trẻ em */}
+                <div>
+                  <label>{t("booking.child")}</label>
+                  <div className="number-input">
+                    <button type="button" onClick={() => dec(setChildCount, 0)}>-</button>
+                    <span>{childCount}</span>
+                    <button type="button" onClick={() => inc(setChildCount)}>+</button>
+                  </div>
+                </div>
+              </div>
+
 
               <div className="form-row">
                 <div>
