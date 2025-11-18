@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 export default function BookingForm() {
   const { t } = useTranslation();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
@@ -22,7 +22,29 @@ export default function BookingForm() {
 
     console.log('Booking data:', data);
     alert(t('booking.alert'));
-    form.reset();
+    
+    try {
+      const res = await fetch("/api/booking", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      if (result.status === "done") {
+        alert("Đã gửi yêu cầu thành công!");
+        form.reset();
+      } else {
+        alert("Gửi thất bại, vui lòng thử lại!");
+      }
+      
+    } catch (error) {
+      console.error("Submit error:", error);
+      alert("Lỗi hệ thống, vui lòng thử lại sau!");
+    }
   };
 
   return (
