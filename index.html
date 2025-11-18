@@ -47,6 +47,59 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+  <!-- =====================================================
+       ⭐⭐⭐ GOOGLE RICH RESULT SCHEMA (3 loại bắt buộc) ⭐⭐⭐
+       ===================================================== -->
+
+  <!-- 1️⃣ ORGANIZATION LOGO (Rich Result) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://thuexephanthiet.info.vn/#organization",
+    "name": "Fanvist Travel - Dịch vụ xe riêng Phan Thiết",
+    "url": "https://thuexephanthiet.info.vn",
+    "logo": "https://thuexephanthiet.info.vn/logo.webp",
+    "sameAs": [
+      "https://zalo.me/0844232144",
+      "https://m.me/thuexesaigonphanthietmuine"
+    ]
+  }
+  </script>
+
+  <!-- 2️⃣ BREADCRUMB LIST (Rich Result) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Trang chủ",
+        "item": "https://thuexephanthiet.info.vn"
+      }
+    ]
+  }
+  </script>
+
+  <!-- 3️⃣ SITELINKS SEARCHBOX (Rich Result) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://thuexephanthiet.info.vn/#website",
+    "url": "https://thuexephanthiet.info.vn",
+    "name": "Fanvist Travel",
+    "potentialAction": [{
+      "@type": "SearchAction",
+      "target": "https://thuexephanthiet.info.vn/?s={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }]
+  }
+  </script>
+
+
   <!-- ============================
        ⭐⭐⭐ SCHEMA JSON-LD ⭐⭐⭐
        TÁCH RIÊNG → GOOGLE INDEX TỐT HƠN
