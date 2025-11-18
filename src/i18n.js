@@ -5,8 +5,8 @@ const resources = {
   vi: {
     translation: {
       seo: {
-        title: 'Đặt xe riêng Sài Gòn - Phan Thiết - Mũi Né - Nha Trang | Xe riêng 24/7',
-        description: 'Dịch vụ đặt xe riêng tuyến Sài Gòn - Phan Thiết - Mũi Né - Nha Trang. Đưa đón tận nơi, tài xế kinh nghiệm, phục vụ hơn 34 tỉnh thành. Gọi 0844232144 để được tư vấn nhanh.'
+        title: 'Đặt xe Sài Gòn - Phan Thiết - Mũi Né - Nha Trang - Đà Lạt | 0844232144',
+        description: 'Dịch vụ đặt xe riêng tuyến Sài Gòn - Phan Thiết - Mũi Né - Đà Lạt - Nha Trang. Đưa đón tận nơi, tài xế kinh nghiệm, phục vụ hơn 34 tỉnh thành. Gọi 0844232144 để được tư vấn nhanh.'
       },
       header: {
         brand: 'Thuê Xe Riêng Trọn Gói Giá Rẻ'
@@ -177,8 +177,8 @@ const resources = {
   en: {
     translation: {
       seo: {
-        title: 'Private car Saigon - Phan Thiet - Mui Ne - Nha Trang | 24/7 service',
-        description: 'Private car service from Saigon to Phan Thiet - Mui Ne - Nha Trang. Door-to-door pickup, experienced drivers, serving 34+ provinces. Call 0844232144 for quick support.'
+        title: 'Private car Saigon - Phan Thiet - Mui Ne - Nha Trang - Da Lat | 24/7 service',
+        description: 'Private car service from Saigon to Phan Thiet - Mui Ne - Da Lat - Nha Trang. Door-to-door pickup, experienced drivers, serving 34+ provinces. Call 0844232144 for quick support.'
       },
       header: {
         brand: 'Private Car SG ⇆ Phan Thiet • Mui Ne • Nha Trang'
