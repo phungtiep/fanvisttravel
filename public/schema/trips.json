@@ -1,0 +1,54 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "https://thuexephanthiet.info.vn#trips",
+  "itemListElement": [
+    {
+      "@type": "Trip",
+      "name": "SGN → Phan Thiết",
+      "provider": { "@id": "https://thuexephanthiet.info.vn#business" },
+      "distance": "180 km",
+      "estimatedTime": "3h – 3.5h",
+      "offers": [
+        { "@type": "Offer", "name": "Xe 4 chỗ", "price": "1200000", "priceCurrency": "VND" },
+        { "@type": "Offer", "name": "Xe 7 chỗ", "price": "1400000", "priceCurrency": "VND" }
+      ]
+    },
+    {
+      "@type": "Trip",
+      "name": "SGN → Mũi Né",
+      "provider": { "@id": "https://thuexephanthiet.info.vn#business" },
+      "distance": "200 km",
+      "estimatedTime": "3.5h – 4h",
+      "offers": [
+        { "@type": "Offer", "name": "Xe 4 chỗ", "price": "1300000", "priceCurrency": "VND" }
+      ]
+    },
+    {
+      "@type": "Trip",
+      "name": "SGN → Đà Lạt",
+      "distance": "305 km",
+      "estimatedTime": "5.5h – 6h",
+      "offers": [
+        { "@type": "Offer", "name": "Xe 4 chỗ", "price": "2500000", "priceCurrency": "VND" }
+      ]
+    },
+    {
+      "@type": "Trip",
+      "name": "SGN → Nha Trang",
+      "distance": "430 km",
+      "estimatedTime": "7h – 8h",
+      "offers": [
+        { "@type": "Offer", "name": "Xe 4 chỗ", "price": "3900000", "priceCurrency": "VND" }
+      ]
+    },
+    {
+      "@type": "Trip",
+      "name": "Phan Thiết → SGN",
+      "distance": "180 km",
+      "offers": [
+        { "@type": "Offer", "name": "Xe 4 chỗ", "price": "1200000", "priceCurrency": "VND" }
+      ]
+    }
+  ]
+}

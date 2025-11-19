@@ -1,80 +1,35 @@
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import Header from './components/Header.jsx';
-import Hero from './components/Hero.jsx';
-import Benefits from './components/Benefits.jsx';
-import Pricing from './components/Pricing.jsx';
-import RoutesSection from './components/RoutesSection.jsx';
-import BookingForm from './components/BookingForm.jsx';
-import ContactSection from './components/ContactSection.jsx';
-import FAQ from './components/FAQ.jsx';
-import Footer from './components/Footer.jsx';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import FloatingButtons from "./components/sections/FloatingButtons";
+import HomePage from "./pages/HomePage";
+import RouteSGNPhanThiet from "./pages/RouteSGNPhanThiet";
+import DatXe from "./pages/Datxe";
+import BangGia from "./pages/BangGia";
+import TuyenDuong from "./pages/TuyenDuong";
+import FAQPage from "./pages/FAQPage";
+import LienHe from "./pages/LienHe";
 
 export default function App() {
-  const { t, i18n } = useTranslation();
-
-  useEffect(() => {
-    document.title = t('seo.title');
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', t('seo.description'));
-    }
-  }, [t, i18n.language]);
-
   return (
-    <>
+    <BrowserRouter>
       <Header />
-      <div className="hero-section">
-        <div className="hero-left">
-          <BookingForm />
-        </div>
 
-        <div className="hero-right">
-          <Hero />
-        </div>
-      </div>
-      <Benefits />
-      <Pricing />
-      <RoutesSection />
-      <ContactSection />
-      <FAQ />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/sgn-phan-thiet" element={<RouteSGNPhanThiet />} />
+        <Route path="/dat-xe" element={<DatXe />} />
+        <Route path="/bang-gia" element={<BangGia />} />
+        <Route path="/tuyen-duong" element={<TuyenDuong />} />
+        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/lien-he" element={<LienHe />} />
+        {/* Thêm các route khác sau này */}
+        {/* <Route path="/sgn-muine" element={<RouteSGNMuiNe />} /> */}
+      </Routes>
+      <FloatingButtons />
       <Footer />
-      <div className={`floating-buttons`}>
-
-        <a
-          href="tel:0844232144"
-          target="_blank"
-          className="float-btn"
-        >
-          <img title="Gọi ngay" src="/phone.webp" alt="Gọi điện" loading="lazy" />
-        </a>
-
-        <a
-          href="https://wa.me/message/KYYD2CHTTITCL1"
-          target="_blank"
-          className="float-btn"
-          
-        >
-          <img title="Chat Whatapp" src="/whatapp.webp" alt="Chat Whatapp" loading="lazy" />
-        </a>
-
-        <a
-          href="https://m.me/thuexesaigonphanthietmuine"
-          target="_blank"
-          className="float-btn"
-          
-        >
-          <img title="Chat Messenger" src="/messenger.webp" alt="Chat Messenger" loading="lazy" />
-        </a>
-
-        <a
-          href="https://zalo.me/0844232144"
-          target="_blank"
-          className="float-btn"
-        >
-          <img title="Chat Zalo" src="/zalo.webp" alt="Chat Zalo" loading="lazy" />
-        </a>
-      </div>
-    </>
+    </BrowserRouter>
   );
 }

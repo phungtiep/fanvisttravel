@@ -1,0 +1,39 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "https://thuexephanthiet.info.vn#vehicles",
+  "itemListElement": [
+    {
+      "@type": "Product",
+      "name": "Xe 4 chỗ – Sedan",
+      "image": "https://thuexephanthiet.info.vn/car-4.jpg",
+      "category": "Car",
+      "description": "Xe 4 chỗ phù hợp nhóm 1–3 khách, hành lý gọn gàng.",
+      "offers": { "@type": "Offer", "price": "1200000", "priceCurrency": "VND" }
+    },
+    {
+      "@type": "Product",
+      "name": "Xe 7 chỗ – SUV/MPV",
+      "image": "https://thuexephanthiet.info.vn/car-7.jpg",
+      "category": "Car",
+      "description": "Xe 7 chỗ rộng rãi, phù hợp gia đình.",
+      "offers": { "@type": "Offer", "price": "1400000", "priceCurrency": "VND" }
+    },
+    {
+      "@type": "Product",
+      "name": "Xe 16 chỗ – Mini Bus",
+      "image": "https://thuexephanthiet.info.vn/car-16.jpg",
+      "category": "Car",
+      "description": "Xe 16 chỗ cho nhóm đông người.",
+      "offers": { "@type": "Offer", "price": "1800000", "priceCurrency": "VND" }
+    },
+    {
+      "@type": "Product",
+      "name": "Xe 29 chỗ – Bus du lịch",
+      "image": "https://thuexephanthiet.info.vn/car-29.jpg",
+      "category": "Car",
+      "description": "Xe 29 chỗ phù hợp đoàn công ty, tour.",
+      "offers": { "@type": "Offer", "price": "2500000", "priceCurrency": "VND" }
+    }
+  ]
+}

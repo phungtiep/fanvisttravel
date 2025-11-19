@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 
 export default function Header() {
@@ -21,6 +22,28 @@ export default function Header() {
     else openMenu();
   };
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const goToSection = (id) => {
+    closeMenu();
+
+    if (location.pathname !== "/") {
+      // Nếu đang ở trang khác → quay về Home trước
+      navigate("/");
+
+      // Đợi Home render rồi mới scroll
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 200);
+    } else {
+      // Đang ở Home → scroll luôn
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       {/* Overlay */}
@@ -39,12 +62,47 @@ export default function Header() {
           </div>
 
           <nav className="hd-menu">
-            <a href="#dat-xe">{t("nav.booking")}</a>
-            <a href="#bang-gia">{t("nav.pricing")}</a>
-            <a href="#tuyen-duong">{t("nav.routes")}</a>
-            <a href="#faq">{t("nav.faq")}</a>
-            <a href="#lien-he">{t("nav.contact")}</a>
+            <Link to="/dat-xe">{t("nav.booking")}</Link>
+            <Link to="/bang-gia">{t("nav.pricing")}</Link>
+            <Link to="/tuyen-duong">{t("nav.routes")}</Link>
+            <Link to="/faq">{t("nav.faq")}</Link>
+            <Link to="/lien-he">{t("nav.contact")}</Link>
           </nav>
+
+          {/* <nav className="hd-menu">
+            <ul>
+              <li>
+                <button onClick={() => goToSection("dat-xe")}>
+                  {t("nav.booking")}
+                </button>
+              </li>
+
+              <li>
+                <button onClick={() => goToSection("bang-gia")}>
+                  {t("nav.pricing")}
+                </button>
+              </li>
+
+              <li>
+                <button onClick={() => goToSection("tuyen-duong")}>
+                  {t("nav.routes")}
+                </button>
+              </li>
+
+              <li>
+                <button onClick={() => goToSection("faq")}>
+                  {t("nav.faq")}
+                </button>
+              </li>
+
+              <li>
+                <button onClick={() => goToSection("lien-he")}>
+                  {t("nav.contact")}
+                </button>
+              </li>
+            </ul>
+          </nav> */}
+
 
           <div className="lang-switch">
             <button
@@ -91,7 +149,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ===== MOBILE BOTTOM SHEET MENU ===== */}
+      {/* ===== MOBILE BOTTOM SHEET MENU =====
       <div className={`mobile-nav ${open ? "show" : ""}`}>
         <a
           href="#dat-xe"
@@ -152,7 +210,32 @@ export default function Header() {
         >
           {t("nav.contact")}
         </a>
+      </div> */}
+      {/* ===== MOBILE BOTTOM SHEET MENU ===== */}
+      <div className={`mobile-nav ${open ? "show" : ""}`}>
+        <button onClick={() => goToSection("dat-xe")}>
+          {t("nav.booking")}
+        </button>
+
+        <button onClick={() => goToSection("bang-gia")}>
+          {t("nav.pricing")}
+        </button>
+
+        <button onClick={() => goToSection("tuyen-duong")}>
+          {t("nav.routes")}
+        </button>
+
+        <button onClick={() => goToSection("faq")}>
+          {t("nav.faq")}
+        </button>
+
+        <button onClick={() => goToSection("lien-he")}>
+          {t("nav.contact")}
+        </button>
       </div>
+
+
+
     </>
   );
 }

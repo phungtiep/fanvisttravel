@@ -1,0 +1,49 @@
+{
+  "routes": {
+    "home": "Home",
+
+    "pt": {
+      "title": "Private Car Saigon → Phan Thiet / Mui Ne",
+      "h1": "Best Private Car Transfer from Ho Chi Minh to Phan Thiet / Mui Ne",
+      "subtitle": "New 4–7–16 seat cars, professional drivers, fixed price, door-to-door pickup in HCMC.",
+      "cta": "Book Now",
+
+      "whyTitle": "Why choose our private car?",
+      "why": [
+        "New cars with strong A/C and reclining seats.",
+        "Experienced drivers familiar with Phan Thiet route.",
+        "Fixed price — no hidden fees.",
+        "No sharing, no shuttle, private ride only.",
+        "Free child seat upon request.",
+        "Flexible rest stops during the trip."
+      ],
+
+      "priceTitle": "Price List — Saigon → Phan Thiet / Mui Ne",
+
+      "table": {
+        "car": "Car Type",
+        "pt": "Phan Thiet Price",
+        "mn": "Mui Ne Price",
+        "c4": "4-seat car",
+        "c7": "7-seat car",
+        "c16": "16-seat minibus"
+      },
+
+      "priceNote": "All prices include tolls, expressway fees, and driver service.",
+
+      "routeTitle": "Travel Itinerary",
+      "route": [
+        "Pickup anywhere in HCMC or Tan Son Nhat Airport.",
+        "Drive through the Long Thanh – Dau Giay Expressway.",
+        "Optional rest stops for food and restroom.",
+        "Drop-off at your hotel in Phan Thiet / Mui Ne."
+      ],
+
+      "faqTitle": "Frequently Asked Questions",
+      "faq": [
+        { "q": "How long is the trip from Saigon to Phan Thiet?", "a": "Around 3 – 3.5 hours." },
+        { "q": "Is it a shared or private car?", "a": "All transfers are private. No sharing." }
+      ]
+    }
+  }
+}

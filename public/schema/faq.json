@@ -1,0 +1,22 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Giá xe SGN → Phan Thiết bao nhiêu?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Giá từ 1.200.000đ – 1.600.000đ, tùy loại xe."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có đón tận nơi không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Có — Xe riêng đưa đón tận nơi Sài Gòn – Phan Thiết – Mũi Né."
+      }
+    }
+  ]
+}
