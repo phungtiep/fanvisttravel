@@ -144,7 +144,7 @@ export default function Header() {
           </a>
 
           <a href="/">
-            <img src="/logo.webp" className="site-logo mobile-logo" alt="Fanvist Travel" />
+            <img src="/logo.webp" className="site-logo mobile-logo" alt="Thue xe di phan thiet" />
           </a>
         </div>
       </header>

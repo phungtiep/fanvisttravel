@@ -5,20 +5,28 @@ export default async function handler(req, res) {
 
     const data = req.body;
 
+    const roundtripText = data.roundTrip ? "Có" : "Không";
+
+
     const messageText = `
 📌 *Thông tin đặt xe mới*  
 ———————————————  
 👤 Họ tên: ${data.fullName}  
-📞 SĐT: ${data.phone}  
+📞 SĐT: ${data.phone}
+📧 Email: ${data.email}  
 🚗 Tuyến: ${data.route}  
 🚘 Loại xe: ${data.carType}  
 📍 Điểm đón: ${data.pickupPlace}  
 🏁 Điểm trả: ${data.dropoffPlace}
 👨‍👩‍👧 Người lớn: ${data.adultCount}
-🧒 Trẻ em: ${data.childCount}  
+🧒 Trẻ em: ${data.childCount}
+🧳 Khứ hồi: ${roundtripText}  
 📅 Ngày đi: ${data.date}  
-⏰ Giờ: ${data.time}  
-📝 Ghi chú: ${data.note || "(không có)"}  
+⏰ Giờ đi: ${data.time}
+📅 Ngày về: ${data.returnDate}  
+⏰ Giờ về: ${data.returnTime}  
+📝 Ghi chú: ${data.note || "(không có)"} 
+🤑 Tổng tiền: ${data.totalPrice} 
 ———————————————
   `;
 
@@ -74,6 +82,21 @@ export default async function handler(req, res) {
         results.sheet = "ok";
     } catch (err) {
         results.sheet = "fail";
+    }
+
+    /* ======================
+       2️⃣ SEND CONFIRM EMAIL VIA GOOGLE SCRIPT
+  ====================== */
+    try {
+        await fetch(process.env.GMAIL_CONFIRM_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        results.gmail = "ok";
+    } catch (err) {
+        results.gmail = "fail";
     }
 
     return res.status(200).json({

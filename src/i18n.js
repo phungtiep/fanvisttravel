@@ -5,7 +5,7 @@ const resources = {
   vi: {
     translation: {
       seo: {
-        title: 'Đặt xe Sài Gòn - Phan Thiết - Mũi Né - Nha Trang - Đà Lạt | 0844232144',
+        title: 'Thuê xe Sài Gòn - Phan Thiết - Mũi Né - Nha Trang - Đà Lạt | 0844232144',
         description: 'Dịch vụ đặt xe riêng tuyến Sài Gòn - Phan Thiết - Mũi Né - Đà Lạt - Nha Trang. Đưa đón tận nơi, tài xế kinh nghiệm, phục vụ hơn 34 tỉnh thành. Gọi 0844232144 để được tư vấn nhanh.'
       },
       header: {
@@ -111,6 +111,7 @@ const resources = {
         fullNamePlaceholder: 'Nguyễn Văn A',
         phone: 'Số điện thoại *',
         phonePlaceholder: '0844 232 144',
+        email: "Email *",
         route: 'Tuyến đường *',
         routeOptions: {
           placeholder: '-- Chọn tuyến --',
@@ -138,6 +139,9 @@ const resources = {
         childPlaceholder: "VD: 1",
         date: 'Ngày đi *',
         time: 'Giờ dự kiến *',
+        roundTrip: 'Khứ hồi',
+        returnDate: 'Ngày về *',
+        returnTime: 'Giờ dự kiến về *',
         note: 'Ghi chú thêm',
         notePlaceholder: 'Số lượng khách, có trẻ em, hành lý nhiều, yêu cầu ghế trẻ em...',
         submit: 'Gửi yêu cầu đặt xe',
@@ -181,7 +185,7 @@ const resources = {
   en: {
     translation: {
       seo: {
-        title: 'Private car Saigon - Phan Thiet - Mui Ne - Nha Trang - Da Lat | 24/7 service',
+        title: 'Private car Saigon - Phan Thiet - Mui Ne - Nha Trang - Da Lat | +84844232144',
         description: 'Private car service from Saigon to Phan Thiet - Mui Ne - Da Lat - Nha Trang. Door-to-door pickup, experienced drivers, serving 34+ provinces. Call 0844232144 for quick support.'
       },
       header: {
@@ -287,6 +291,7 @@ const resources = {
         fullNamePlaceholder: 'e.g. John Nguyen',
         phone: 'Phone number *',
         phonePlaceholder: '0844 232 144',
+        email: "Email *",
         route: 'Route *',
         routeOptions: {
           placeholder: '-- Select route --',
@@ -314,6 +319,9 @@ const resources = {
         childPlaceholder: "e.g. 1",
         date: 'Departure date *',
         time: 'Estimated time *',
+        roundTrip: "Round-trip?",
+        returnDate: "Return date",
+        returnTime: "Return time",
         note: 'Additional note',
         notePlaceholder: 'Number of passengers, kids, lots of luggage, child seat request...',
         submit: 'Send booking request',

@@ -24,15 +24,17 @@ export default function App() {
 
   return (
     <>
-      <div className="hero-section">
+      {/* <div className="hero-section">
         <div className="hero-left">
-          <BookingForm />
+          
         </div>
 
         <div className="hero-right">
-          <Hero />
+          
         </div>
-      </div>
+      </div> */}
+      <BookingForm />
+      <Hero />
       <Benefits />
       <Pricing />
       <RoutesSection />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function BookingForm() {
@@ -10,6 +10,104 @@ export default function BookingForm() {
   const inc = (setter, max = 50) => setter((prev) => Math.min(max, prev + 1));
   const dec = (setter, min = 0) => setter((prev) => Math.max(min, prev - 1));
 
+  const [carType, setCarType] = useState("");
+  const [rawCarType, setRawCarType] = useState("");
+  const [route, setRoute] = useState("");
+  const [roundTrip, setRoundTrip] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+
+  const [isRoundTrip, setIsRoundTrip] = useState(false);
+  const [returnDate, setReturnDate] = useState("");
+  const [returnTime, setReturnTime] = useState("");
+
+
+
+  /** ==========================
+   *  QUY ĐỊNH SỐ KHÁCH & GIÁ
+   =========================== */
+  const CAR_RULES = {
+    "4-ch": { maxPassengers: 4 },
+    "7-ch": { maxPassengers: 7 },
+    "16-ch": { maxPassengers: 15 },
+    "29-ch": { maxPassengers: 28 },
+  };
+
+  const ROUTE_MAP = {
+    "sg-pt": "sgn-phanthiet",
+    "sg-mn": "sgn-muine",
+    "sg-nt": "sgn-nhatrang",
+    "sg-khac": "other",
+    khac: "other",
+  };
+
+  /** ==========================
+ *  BẢNG GIÁ CHUẨN
+ =========================== */
+  const PRICE_TABLE = {
+    "sg-pt": {
+      name: "Sài Gòn → Phan Thiết",
+      price: { "4-ch": 1200000, "7-ch": 1400000, "16-ch": 2200000, "29-ch": 4000000 }
+    },
+    "sg-mn": {
+      name: "Sài Gòn → Mũi Né",
+      price: { "4-ch": 1300000, "7-ch": 1500000, "16-ch": 2300000, "29-ch": 2700000 }
+    },
+    "sg-nt": {
+      name: "Sài Gòn → Nha Trang",
+      price: { "4-ch": 2800000, "7-ch": 3200000, "16-ch": 4200000, "29-ch": 7000000 }
+    }
+  };
+
+
+  /** ==========================
+   *  RÀNG BUỘC SỐ LƯỢNG KHÁCH
+   =========================== */
+  useEffect(() => {
+    if (!carType) return;
+
+    const rules = CAR_RULES[carType];
+    const total = adultCount + childCount;
+
+    if (total > rules.maxPassengers) {
+      alert(`❗ Xe này chỉ chở tối đa ${rules.maxPassengers} hành khách.`);
+
+      // Tự động điều chỉnh lại cho hợp lệ
+      if (adultCount >= rules.maxPassengers) {
+        setAdultCount(rules.maxPassengers);
+        setChildCount(0);
+      } else {
+        setChildCount(rules.maxPassengers - adultCount);
+      }
+    }
+  }, [carType, adultCount, childCount]);
+
+  /** ==========================
+ *  TÍNH GIÁ REALTIME
+ =========================== */
+  useEffect(() => {
+    if (!route || !carType) {
+      setTotalPrice(0);
+      return;
+    }
+
+    const basePrice = PRICE_TABLE[route]?.price?.[carType] || 0;
+
+    let price = basePrice;
+
+    if (roundTrip) price *= 2;
+
+    setTotalPrice(price);
+  }, [route, carType, roundTrip]);
+
+
+
+
+
+
+  /** ==========================
+   *  SUBMIT BOOKING
+   =========================== */
 
 
   const handleSubmit = async (e) => {
@@ -17,18 +115,40 @@ export default function BookingForm() {
     setLoading(true); // Bật loading
     const form = e.target;
 
+    const mappedCar = carType; // 4 → 4-ch
+
+    const mappedRoute = ROUTE_MAP[form.route.value];
+
+    const rules = CAR_RULES[mappedCar];
+    const totalPassengers = adultCount + childCount;
+
+    // Check lần cuối
+    if (totalPassengers > rules.maxPassengers) {
+      alert(
+        `❗ Xe này chỉ chở tối đa ${rules.maxPassengers} khách. Vui lòng điều chỉnh lại.`
+      );
+      setLoading(false);
+      return;
+    }
+
+
     const data = {
       fullName: form.fullName.value.trim(),
       phone: form.phone.value.trim(),
-      route: form.route.value,
-      carType: form.carType.value,
+      email: form.email.value.trim(),
+      route: mappedRoute,
+      carType: mappedCar,
       pickupPlace: form.pickupPlace.value.trim(),
       dropoffPlace: form.dropoffPlace.value.trim(),
       date: form.date.value,
       time: form.time.value,
+      roundTrip,
+      returnDate: roundTrip ? returnDate : null,
+      returnTime: roundTrip ? returnTime : null,
       note: form.note.value.trim(),
       adultCount,
       childCount,
+      totalPrice
     };
 
     console.log('Booking data:', data);
@@ -92,8 +212,8 @@ export default function BookingForm() {
             <p style={{ marginBottom: '8px' }}>
               {t('booking.intro')}
             </p>
-            <form id="bookingForm" onSubmit={handleSubmit}>
-              <div className="form-row">
+            <form id="bookingForm" className="booking-form" onSubmit={handleSubmit}>
+              <div className="form-row-3">
                 <div>
                   <label htmlFor="fullName">{t('booking.fullName')}</label>
                   <input
@@ -112,9 +232,20 @@ export default function BookingForm() {
                     placeholder={t('booking.phonePlaceholder')}
                   />
                 </div>
+                {/* ===== EMAIL ===== */}
+                <div style={{ width: "100%" }}>
+                  <label htmlFor="email">{t('booking.email')}</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="example@gmail.com"
+                  />
+                </div>
               </div>
 
-              <div className="form-row">
+              {/* <div className="form-row">
                 <div>
                   <label htmlFor="route">{t('booking.route')}</label>
                   <select id="route" name="route" required>
@@ -140,7 +271,39 @@ export default function BookingForm() {
                     <option value="29">{t('booking.carTypeOptions.c29')}</option>
                   </select>
                 </div>
-              </div>
+              </div> */}
+
+              <select
+                id="route"
+                name="route"
+                required
+                value={route}
+                onChange={(e) => setRoute(e.target.value)}
+              >
+                <option value="">-- Chọn tuyến --</option>
+                <option value="sg-pt">Sài Gòn → Phan Thiết</option>
+                <option value="sg-mn">Sài Gòn → Mũi Né</option>
+                <option value="sg-nt">Sài Gòn → Nha Trang</option>
+              </select>
+
+              <select
+                id="carType"
+                name="carType"
+                required
+                value={rawCarType}
+                onChange={(e) => {
+                  setRawCarType(e.target.value);           // lưu 4
+                  setCarType(e.target.value + "-ch");      // chuyển thành 4-ch
+                }}
+              >
+                <option value="">-- Chọn loại xe --</option>
+                <option value="4">4 chỗ</option>
+                <option value="7">7 chỗ</option>
+                <option value="16">16 chỗ</option>
+                <option value="29">29 chỗ</option>
+              </select>
+
+
 
               <div className="form-row">
                 <div>
@@ -196,6 +359,70 @@ export default function BookingForm() {
                   <input type="time" id="time" name="time" required />
                 </div>
               </div>
+
+              {/* --- KHỨ HỒI --- */}
+              <div
+                className="form-row-roundtrip"
+                style={{
+                  marginTop: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px"
+                }}
+              >
+
+
+                <div className="switch-wrap">
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      checked={roundTrip}
+                      onChange={(e) => setRoundTrip(e.target.checked)}
+                    />
+                    <span className="slider"></span>
+                  </label>
+
+                  <span className="switch-label">{t("booking.roundTrip")}</span>
+                </div>
+
+
+                {route && carType && (
+                  <div className="price-box">
+                    <strong>Giá tạm tính:</strong>
+                    <p>{totalPrice.toLocaleString()} đ</p>
+                  </div>
+                )}
+              </div>
+
+
+              {/* --- NGÀY / GIỜ KHỨ HỒI GỌN ĐẸP --- */}
+              {roundTrip && (
+                <div className="form-row" style={{ marginTop: "10px" }}>
+                  <div>
+                    <label>{t("booking.returnDate")}</label>
+                    <input
+                      type="date"
+                      value={returnDate}
+                      onChange={(e) => setReturnDate(e.target.value)}
+                      required
+                      className="input"
+                    />
+                  </div>
+
+                  <div>
+                    <label>{t("booking.returnTime")}</label>
+                    <input
+                      type="time"
+                      value={returnTime}
+                      onChange={(e) => setReturnTime(e.target.value)}
+                      required
+                      className="input"
+                    />
+                  </div>
+                </div>
+              )}
+
+
 
               <div>
                 <label htmlFor="note">{t('booking.note')}</label>
