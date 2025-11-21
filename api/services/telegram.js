@@ -34,7 +34,7 @@ export async function sendTelegram(data) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 chat_id: process.env.TELEGRAM_CHAT_ID,
-                text: msg,
+                text: messageText,
                 parse_mode: "Markdown"
             }),
         }
