@@ -1,13 +1,4 @@
 {
-  "version": 2,
-
-  "routes": [
-    { "src": "/api/cars", "dest": "api/services/getCars.js" },
-    { "src": "/api/routes", "dest": "api/services/getRoutes.js" },
-    { "src": "/api/booking", "dest": "api/route/booking.js" }
-  ],
-
-
 
   "headers": [
     {
