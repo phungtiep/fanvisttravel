@@ -1,4 +1,21 @@
 {
+  "version": 2,
+
+  "functions": {
+    "server/**/*.js": {
+      "runtime": "nodejs18.x",
+      "memory": 128
+    }
+  },
+
+  "routes": [
+    { "src": "/api/cars", "dest": "/server/services/getCars.js" },
+    { "src": "/api/routes", "dest": "/server/services/getRoutes.js" },
+    { "src": "/api/booking", "dest": "/server/route/booking.js" }
+  ],
+
+
+
   "headers": [
     {
       "source": "/(.*)\\.(js|css|png|jpg|jpeg|webp|svg|ico|woff2?)",
