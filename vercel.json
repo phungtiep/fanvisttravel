@@ -3,15 +3,27 @@
 
   "functions": {
     "api/**/*.js": {
-      "runtime": "nodejs18.x",
-      "memory": 128
+      "runtime": "nodejs18.x"
     }
   },
 
   "routes": [
-    { "src": "/api/cars", "dest": "api/server/services/getCars.js" },
-    { "src": "/api/routes", "dest": "api/server/services/getRoutes.js" },
-    { "src": "/api/booking", "dest": "api/server/route/booking.js" }
+    {
+      "src": "/api/cars",
+      "dest": "/api/services/getCars.js"
+    },
+    {
+      "src": "/api/routes",
+      "dest": "/api/services/getRoutes.js"
+    },
+    {
+      "src": "/api/price",
+      "dest": "/api/services/getPrice.js"
+    },
+    {
+      "src": "/api/booking",
+      "dest": "/api/route/booking.js"
+    }
   ],
 
 
