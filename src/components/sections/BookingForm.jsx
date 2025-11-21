@@ -21,6 +21,8 @@ export default function BookingForm() {
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
 
+  const [routesData, setRoutesData] = useState([]);
+  const [carsData, setCarsData] = useState([]);
 
 
   /** ==========================
@@ -58,6 +60,21 @@ export default function BookingForm() {
       price: { "4-ch": 2800000, "7-ch": 3200000, "16-ch": 4200000, "29-ch": 7000000 }
     }
   };
+
+  // Lấy danh sách tuyến từ API backend
+  useEffect(() => {
+    fetch("/api/routes")
+      .then((res) => res.json())
+      .then((data) => setRoutesData(data.routes || []));
+  }, []);
+
+  // Lấy danh sách loại xe từ backend
+  useEffect(() => {
+    fetch("/api/cars")
+      .then((res) => res.json())
+      .then((data) => setCarsData(data.cars || []));
+  }, []);
+
 
 
   /** ==========================
@@ -103,6 +120,14 @@ export default function BookingForm() {
 
 
 
+  // Tính giá realtime theo database
+  useEffect(() => {
+    if (!route || !carType) return;
+
+    fetch(`/api/price?route=${route}&carType=${carType}&roundtrip=${roundTrip}`)
+      .then((res) => res.json())
+      .then((data) => setTotalPrice(data.price || 0));
+  }, [route, carType, roundTrip]);
 
 
   /** ==========================
@@ -155,7 +180,7 @@ export default function BookingForm() {
     alert(t('booking.alert'));
 
     try {
-      const res = await fetch("/api/booking", {
+      const res = await fetch("https://api.thuexephanthiet.info.vn/api/booking", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -281,27 +306,31 @@ export default function BookingForm() {
                 onChange={(e) => setRoute(e.target.value)}
               >
                 <option value="">-- Chọn tuyến --</option>
-                <option value="sg-pt">Sài Gòn → Phan Thiết</option>
-                <option value="sg-mn">Sài Gòn → Mũi Né</option>
-                <option value="sg-nt">Sài Gòn → Nha Trang</option>
+
+                {routesData.map((r) => (
+                  <option key={r.id} value={r.code}>
+                    {r.name}
+                  </option>
+                ))}
               </select>
+
 
               <select
                 id="carType"
                 name="carType"
                 required
-                value={rawCarType}
-                onChange={(e) => {
-                  setRawCarType(e.target.value);           // lưu 4
-                  setCarType(e.target.value + "-ch");      // chuyển thành 4-ch
-                }}
+                value={carType}
+                onChange={(e) => setCarType(e.target.value)}
               >
                 <option value="">-- Chọn loại xe --</option>
-                <option value="4">4 chỗ</option>
-                <option value="7">7 chỗ</option>
-                <option value="16">16 chỗ</option>
-                <option value="29">29 chỗ</option>
+
+                {carsData.map((c) => (
+                  <option key={c.id} value={c.code}>
+                    {c.name}
+                  </option>
+                ))}
               </select>
+
 
 
 
