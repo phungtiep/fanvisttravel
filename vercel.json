@@ -1,20 +1,37 @@
 {
-  "routes": [
-    { "src": "/api/booking", "dest": "/api/booking.js" },
-    { "src": "/api/cars", "dest": "/api/services/getCars.js" },
-    { "src": "/api/routes", "dest": "/api/services/getRoutes.js" },
-    { "src": "/api/prices", "dest": "/api/services/getPrices.js" }
-  ],
-
-  "headers": [
-    {
-      "source": "/(.*)\\.(js|css|png|jpg|jpeg|webp|svg|ico|woff2?)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    }
-  ]
+  "version": 2,
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs18.x"
+    },
+    "routes": [
+      {
+        "src": "/api/booking",
+        "dest": "/api/booking.js"
+      },
+      {
+        "src": "/api/cars",
+        "dest": "/api/services/getCars.js"
+      },
+      {
+        "src": "/api/routes",
+        "dest": "/api/services/getRoutes.js"
+      },
+      {
+        "src": "/api/prices",
+        "dest": "/api/services/getPrices.js"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/(.*)\\.(js|css|png|jpg|jpeg|webp|svg|ico|woff2?)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      }
+    ]
+  }
 }
