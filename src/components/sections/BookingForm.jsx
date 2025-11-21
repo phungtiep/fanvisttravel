@@ -180,7 +180,7 @@ export default function BookingForm() {
     alert(t('booking.alert'));
 
     try {
-      const res = await fetch("https://api.thuexephanthiet.info.vn/api/booking", {
+      const res = await fetch("/api/booking", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
