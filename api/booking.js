@@ -1,4 +1,3 @@
-import { saveBookingToSupabase } from "./services/database.js";
 import { sendTelegram } from "./services/telegram.js";
 import { sendEmail } from "./services/email.js";
 import { sendToSheet } from "./services/googleSheet.js";
@@ -12,8 +11,6 @@ export default async function handler(req, res) {
   const data = req.body;
 
   try {
-    // 1) Lưu vào Supabase
-    await saveBookingToSupabase(data);
 
     // 2) Gửi Telegram
     await sendTelegram(data);
