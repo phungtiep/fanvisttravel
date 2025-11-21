@@ -1,27 +1,4 @@
 {
-  "version": 2,
-
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-
-  "routes": [
-    {
-      "src": "/api/cars",
-      "dest": "/api/services/getCars.js"
-    },
-    {
-      "src": "/api/routes",
-      "dest": "/api/services/getRoutes.js"
-    },
-    {
-      "src": "/api/prices",
-      "dest": "/api/services/getPrices.js"
-    }
-  ],
-
   "headers": [
     {
       "source": "/(.*)\\.(js|css|png|jpg|jpeg|webp|svg|ico|woff2?)",

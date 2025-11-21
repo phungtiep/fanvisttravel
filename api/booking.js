@@ -2,7 +2,7 @@ import { saveBookingToSupabase } from "./services/database.js";
 import { sendTelegram } from "./services/telegram.js";
 import { sendEmail } from "./services/email.js";
 import { sendToSheet } from "./services/googleSheet.js";
-import { confirmEmail } from "./services/confirmEmail.js";
+import { confirmEmail } from "./services/comfirmEmail.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
