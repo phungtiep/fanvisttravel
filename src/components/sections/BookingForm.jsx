@@ -124,7 +124,7 @@ export default function BookingForm() {
   useEffect(() => {
     if (!route || !carType) return;
 
-    fetch(`/api/price?route=${route}&carType=${carType}&roundtrip=${roundTrip}`)
+    fetch(`/api/prices?route=${route}&carType=${carType}&roundtrip=${roundTrip}`)
       .then((res) => res.json())
       .then((data) => setTotalPrice(data.price || 0));
   }, [route, carType, roundTrip]);
