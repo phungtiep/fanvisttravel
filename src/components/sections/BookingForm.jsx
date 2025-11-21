@@ -192,7 +192,7 @@ export default function BookingForm() {
 
 
 
-      if (result.status === "done") {
+      if (result.status === "ok") {
         // alert("Đã gửi yêu cầu thành công!");
         setSuccess(true);
         form.reset();
