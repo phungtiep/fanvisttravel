@@ -1,5 +1,4 @@
 {
-
   "headers": [
     {
       "source": "/(.*)\\.(js|css|png|jpg|jpeg|webp|svg|ico|woff2?)",
