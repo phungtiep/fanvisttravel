@@ -1,14 +1,44 @@
 import { supabase } from "./lib/superbase.js";
 
+// export default async function handler(req, res) {
+//   const { route, code, roundtrip } = req.query;
+
+//   if (!route || !code) {
+//     return res.status(400).json({ error: "Missing route or code" });
+//   }
+
+//   const { data: routeData, error } = await supabase
+//     .from("routes")
+//     .select("*")
+//     .eq("code", route)
+//     .single();
+
+//   if (error) return res.status(500).json({ error: error.message });
+
+//   const priceMap = {
+//     "4-ch": routeData.price_4,
+//     "7-ch": routeData.price_7,
+//     "16-ch": routeData.price_16,
+//     "29-ch": routeData.price_29,
+//   };
+
+//   let price = priceMap[code] || 0;
+//   if (roundtrip === "true") price *= 2;
+
+//   return res.status(200).json({ price });
+// }
+
+
+
 export default async function handler(req, res) {
   try {
     if (req.method !== "GET") {
       return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const { route, carType, roundtrip } = req.query;
+    const { route, code, roundtrip } = req.query;
 
-    if (!route || !carType) {
+    if (!route || !code) {
       return res.status(400).json({ error: "Missing parameters" });
     }
 
@@ -31,7 +61,7 @@ export default async function handler(req, res) {
       "29-ch": routeData.price_29,
     };
 
-    let price = priceMap[carType] || 0;
+    let price = priceMap[code] || 0;
 
     // Nếu là khứ hồi → nhân đôi
     if (roundtrip === "true") {

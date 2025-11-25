@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
       .from("cars")
-      .select("*")
+      .select("id, code, name_vi, name_en, seat_count, base_price, image_url, active")
       .eq("active", true);
 
     if (error) {

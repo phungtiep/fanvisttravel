@@ -70,9 +70,16 @@ export default function BookingForm() {
 
   // Lấy danh sách loại xe từ backend
   useEffect(() => {
-    fetch("/api/cars")
-      .then((res) => res.json())
-      .then((data) => setCarsData(data.cars || []));
+    async function loadCars() {
+      try {
+        const res = await fetch("/api/cars");
+        const json = await res.json();
+        setCars(json.cars);
+      } catch (e) {
+        console.error("Load cars failed:", e);
+      }
+    }
+    loadCars();
   }, []);
 
 
@@ -122,11 +129,14 @@ export default function BookingForm() {
 
   // Tính giá realtime theo database
   useEffect(() => {
-    if (!route || !carType) return;
+    async function fetchPrice() {
+      if (!route || !carType) return;
 
-    fetch(`/api/prices?route=${route}&carType=${carType}&roundtrip=${roundTrip}`)
-      .then((res) => res.json())
-      .then((data) => setTotalPrice(data.price || 0));
+      const res = await fetch(`/api/prices?route=${route}&code=${carType}&roundtrip=${roundTrip}`);
+      const json = await res.json();
+      setTotalPrice(json.price);
+    }
+    fetchPrice();
   }, [route, carType, roundTrip]);
 
 
@@ -324,9 +334,9 @@ export default function BookingForm() {
               >
                 <option value="">-- Chọn loại xe --</option>
 
-                {carsData.map((c) => (
-                  <option key={c.id} value={c.code}>
-                    {c.name}
+                {cars.map(car => (
+                  <option key={car.id} value={car.code}>
+                    {i18n.language === "vi" ? car.name_vi : car.name_en}
                   </option>
                 ))}
               </select>
@@ -418,6 +428,11 @@ export default function BookingForm() {
                 {route && carType && (
                   <div className="price-box">
                     <strong>Giá tạm tính:</strong>
+                    <p>
+                      {i18n.language === "vi"
+                        ? cars.find(c => c.code === carType)?.name_vi
+                        : cars.find(c => c.code === carType)?.name_en}
+                    </p>
                     <p>{totalPrice.toLocaleString()} đ</p>
                   </div>
                 )}
