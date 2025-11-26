@@ -89,23 +89,28 @@ export default function BookingForm() {
    *  RÀNG BUỘC SỐ LƯỢNG KHÁCH
    =========================== */
   useEffect(() => {
-    if (!carType) return;
+    if (!carType || !cars || cars.length === 0) return;
 
-    const rules = CAR_RULES[carType];
+    // tìm xe theo code
+    const car = cars.find(c => c.code === carType);
+    if (!car) return;
+
+    const max = car.seat_count;
     const total = adultCount + childCount;
 
-    if (total > rules.maxPassengers) {
-      alert(`❗ Xe này chỉ chở tối đa ${rules.maxPassengers} hành khách.`);
+    if (total > max) {
+      alert(`❗ Xe này chỉ chở tối đa ${max} hành khách.`);
 
       // Tự động điều chỉnh lại cho hợp lệ
-      if (adultCount >= rules.maxPassengers) {
-        setAdultCount(rules.maxPassengers);
+      if (adultCount >= max) {
+        setAdultCount(max);
         setChildCount(0);
       } else {
-        setChildCount(rules.maxPassengers - adultCount);
+        setChildCount(max - adultCount);
       }
     }
-  }, [carType, adultCount, childCount]);
+  }, [carType, adultCount, childCount, cars]);
+
 
   /** ==========================
  *  TÍNH GIÁ REALTIME
