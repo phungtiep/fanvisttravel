@@ -59,6 +59,15 @@ export default async function handler(req, res) {
       "7-ch": routeData.price_7,
       "16-ch": routeData.price_16,
       "29-ch": routeData.price_29,
+      "45-ch": routeData.price_45,
+
+      "limo-9": routeData.price_9,
+      "limo-11": routeData.price_11,
+      "limo-19": routeData.price_19,
+      "limo-24": routeData.price_24,
+
+      "carnival": routeData.price_carnival,
+      "sedona": routeData.price_sedona,
     };
 
     let price = priceMap[code] || 0;
