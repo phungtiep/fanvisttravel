@@ -9,7 +9,9 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
       .from("cars")
       .select("id, code, name_vi, name_en, seat_count, base_price, image_url, active")
-      .eq("active", true);
+      .eq("active", true)
+      .order("seat_count", { ascending: true })
+      .order("name_vi", { ascending: true });
 
     if (error) {
       console.error("Supabase error:", error);
