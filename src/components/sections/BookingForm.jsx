@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // PATCH >>>> thêm props
-export default function BookingForm({ defaultRouteCode = "", defaultCarType = "", onSuccess = () => {} }) {
-// <<<< PATCH
+export default function BookingForm({ defaultRouteCode = "", defaultCarType = "", onSuccess = () => { } }) {
+  // <<<< PATCH
 
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -210,19 +210,29 @@ export default function BookingForm({ defaultRouteCode = "", defaultCarType = ""
       const result = await res.json();
 
       if (result.status === "ok") {
+
+        // FIX: tắt loading trước khi popup bị đóng
+        setLoading(false);
+
         setSuccess(true);
         form.reset();
-        onSuccess();
+
+        onSuccess(); // đóng popup
+
         setTimeout(() => setSuccess(false), 2000);
+
+        return; // không chạy xuống dưới nữa
       } else {
         alert("Gửi thất bại, vui lòng thử lại!");
       }
+
     } catch (error) {
       console.error("Submit error:", error);
       alert("Lỗi hệ thống, vui lòng thử lại sau!");
     }
 
-    setLoading(false);
+    setLoading(false); // vẫn giữ để fallback lỗi
+
   };
 
   return (
