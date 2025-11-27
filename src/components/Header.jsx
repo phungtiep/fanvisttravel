@@ -68,6 +68,22 @@ export default function Header() {
   const grouped = groupRoutes(routes);
 
   /* =====================================
+       👉 ĐẨY "Từ Sài Gòn" LÊN ĐẦU
+  ====================================== */
+  const groupedOrdered = (() => {
+    const sg = "Từ Sài Gòn";
+    const out = {};
+
+    if (grouped[sg]) out[sg] = grouped[sg];
+
+    Object.keys(grouped).forEach((key) => {
+      if (key !== sg) out[key] = grouped[key];
+    });
+
+    return out;
+  })();
+
+  /* =====================================
         CLICK OUTSIDE TO CLOSE
   ====================================== */
   useEffect(() => {
@@ -153,14 +169,14 @@ export default function Header() {
                     <div className="dropdown-empty">Chưa có dữ liệu tuyến</div>
                   )}
 
-                  {/* GROUPED ROUTES */}
+                  {/* GROUPED ROUTES — ĐÃ ĐẨY SG LÊN ĐẦU */}
                   {!routesLoading &&
-                    Object.keys(grouped).map((region) => (
+                    Object.keys(groupedOrdered).map((region) => (
                       <div key={region} className="route-group">
                         <div className="route-group-title">{region}</div>
 
                         <div className="dropdown-grid">
-                          {grouped[region].map((r) => (
+                          {groupedOrdered[region].map((r) => (
                             <Link
                               key={r.id}
                               to={`/tuyen-duong/${r.code}`}
