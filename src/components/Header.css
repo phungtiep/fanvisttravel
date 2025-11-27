@@ -376,8 +376,8 @@
   transform: translateY(-1px);
 }
 
-//* ==============================
-   DROPDOWN WRAPPER
+/* ==============================
+   DROPDOWN WRAPPER (GỌN)
 ============================== */
 .dropdown-box {
   position: absolute;
@@ -385,16 +385,17 @@
   left: 50%;
   transform: translateX(-50%);
   background: white;
-  border-radius: 20px;
-  padding: 24px 28px;
+  border-radius: 16px;
+  padding: 20px 22px;
   width: 90%;
-  max-width: 760px;         /* GIỚI HẠN CHIỀU RỘNG */
-  box-shadow: 0px 12px 40px rgba(0, 0, 0, 0.12);
-  z-index: 999;
+  max-width: 480px;        /* ⭐ GỌN LẠI NHƯ BẠN MUỐN */
+  max-height: 70vh;        /* ⭐ Tự scroll nếu dài */
+  overflow-y: auto;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
   animation: dropdownFade 0.15s ease-out;
 }
 
-/* Animation nhẹ */
+/* Animation */
 @keyframes dropdownFade {
   from {
     opacity: 0;
@@ -407,83 +408,73 @@
 }
 
 /* ==============================
-   TIÊU ĐỀ DROPDOWN
+   HEADER
 ============================== */
 .dropdown-title {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .dropdown-subtitle {
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .dropdown-divider {
   height: 1px;
-  background: #e5e7eb;
+  background: #eee;
+  margin-bottom: 14px;
+}
+
+/* ==============================
+   NHÓM TUYẾN
+============================== */
+.route-group {
   margin-bottom: 18px;
 }
 
-/* ==============================
-   GROUP ROUTE
-============================== */
-.route-group {
-  margin-bottom: 22px;
-}
-
 .route-group-title {
+  font-size: 15px;
   font-weight: 600;
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #333;
+  margin-bottom: 8px;
 }
 
 /* ==============================
-   GRID 2 CỘT
+   TUYẾN ĐƯỜNG – 1 CỘT GỌN
 ============================== */
 .dropdown-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-@media (max-width: 640px) {
-  .dropdown-grid {
-    grid-template-columns: 1fr; /* MOBILE: 1 CỘT */
-  }
-}
-
-/* ==============================
-   ITEM TUYẾN ĐƯỜNG
-============================== */
-.dropdown-item {
-  background: #f7f7f9;
-  padding: 14px 16px;
-  border-radius: 14px;
-  font-size: 16px;
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Item */
+.dropdown-item {
+  display: flex;
   align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #f7f7f8;
+  border-radius: 12px;
+  font-size: 15px;
   border: 1px solid transparent;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .dropdown-item:hover {
-  background: #fff;
-  border-color: #d4d4d4;
-  transform: translateY(-2px);
+  background: white;
+  border-color: #ddd;
+  transform: translateX(4px);
 }
 
 .route-icon {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .rt-main {
   font-weight: 600;
-  margin-right: 4px;
 }
 
 .rt-sub {
