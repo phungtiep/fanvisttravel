@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function BookingForm({
   defaultRouteCode = "",
   defaultCarType = "",
-  onSuccess = () => {}
+  onSuccess = () => {},
 }) {
-
   const { t, i18n } = useTranslation();
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
 
-  const inc = (setter, max = 50) => setter(prev => Math.min(max, prev + 1));
-  const dec = (setter, min = 0) => setter(prev => Math.max(min, prev - 1));
+  const inc = (setter, max = 50) => setter((prev) => Math.min(max, prev + 1));
+  const dec = (setter, min = 0) => setter((prev) => Math.max(min, prev - 1));
 
   const [carType, setCarType] = useState(defaultCarType);
   const [route, setRoute] = useState(defaultRouteCode);
@@ -28,22 +28,27 @@ export default function BookingForm({
   const [routesData, setRoutesData] = useState([]);
   const [cars, setCars] = useState([]);
 
-
   /** ==========================
-   * LOAD ROUTES + CARS
-   =========================== */
+   * LOAD ROUTES
+   ========================== */
   useEffect(() => {
     fetch("/api/routes")
-      .then(res => res.json())
-      .then(data => setRoutesData(data.routes || []));
+      .then((res) => res.json())
+      .then((data) => setRoutesData(data.routes || []));
   }, []);
 
+  /** ==========================
+   * LOAD CARS
+   ========================== */
   useEffect(() => {
     fetch("/api/cars")
-      .then(res => res.json())
-      .then(data => setCars(data.cars || []));
+      .then((res) => res.json())
+      .then((data) => setCars(data.cars || []));
   }, []);
 
+  /** ==========================
+   * APPLY DEFAULTS FROM ROUTE DETAIL
+   ========================== */
   useEffect(() => {
     if (defaultRouteCode) setRoute(defaultRouteCode);
   }, [defaultRouteCode]);
@@ -52,10 +57,38 @@ export default function BookingForm({
     if (defaultCarType) setCarType(defaultCarType);
   }, [defaultCarType]);
 
+  /** ==========================
+   * FETCH PRICE FROM BACKEND
+   ========================== */
+  useEffect(() => {
+    async function fetchPrice() {
+      if (!route || !carType) {
+        setTotalPrice(0);
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          `/api/prices?route=${route}&code=${carType}&roundtrip=${roundTrip}`
+        );
+        const json = await res.json();
+
+        if (json?.price != null) {
+          setTotalPrice(json.price);
+        } else {
+          setTotalPrice(0);
+        }
+      } catch (err) {
+        setTotalPrice(0);
+      }
+    }
+
+    fetchPrice();
+  }, [route, carType, roundTrip]);
 
   /** ==========================
-   * SUBMIT
-   =========================== */
+   * SUBMIT BOOKING
+   ========================== */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -66,19 +99,19 @@ export default function BookingForm({
       fullName: form.fullName.value.trim(),
       phone: form.phone.value.trim(),
       email: form.email.value.trim(),
-      route: form.route.value,      // FIXED
+      route,
       carType,
       pickupPlace: form.pickupPlace.value.trim(),
       dropoffPlace: form.dropoffPlace.value.trim(),
       date: form.date.value,
       time: form.time.value,
       roundTrip,
-      returnDate,
-      returnTime,
+      returnDate: roundTrip ? returnDate : null,
+      returnTime: roundTrip ? returnTime : null,
       note: form.note.value.trim(),
       adultCount,
       childCount,
-      totalPrice
+      totalPrice,
     };
 
     alert(t("booking.alert"));
@@ -87,40 +120,34 @@ export default function BookingForm({
       const res = await fetch("/api/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
 
       const result = await res.json();
 
       if (result.status === "ok") {
-
-        // tắt loading TRƯỚC khi đóng popup
+        // FIX: tắt loading trước khi popup bị đóng
         setLoading(false);
-
         setSuccess(true);
-        form.reset();
 
+        form.reset();
         onSuccess();
 
         setTimeout(() => setSuccess(false), 200);
         return;
-      }
-      else {
+      } else {
         alert("Gửi thất bại, vui lòng thử lại!");
       }
     } catch (err) {
-      alert("Lỗi hệ thống!");
+      alert("Lỗi hệ thống, vui lòng thử lại sau!");
     }
 
     setLoading(false);
   };
 
-
-  /** ==========================
-   * UI
-   =========================== */
   return (
     <>
+      {/* LOADING */}
       {loading && (
         <div className="loading-overlay">
           <div className="loader"></div>
@@ -128,6 +155,7 @@ export default function BookingForm({
         </div>
       )}
 
+      {/* SUCCESS */}
       {success && (
         <div className="success-popup">
           <div className="success-box">
@@ -140,17 +168,16 @@ export default function BookingForm({
       <section id="dat-xe">
         <div className="container">
           <h2>{t("booking.title")}</h2>
+
           <div className="card">
             <p>{t("booking.intro")}</p>
 
-            <form onSubmit={handleSubmit} className="booking-form">
-
-              {/* === THÔNG TIN KHÁCH === */}
+            <form className="booking-form" onSubmit={handleSubmit}>
+              {/* ========= USER INFO ========= */}
               <div className="form-row-3">
                 <div>
                   <label>{t("booking.fullName")}</label>
                   <input
-                    id="fullName"
                     name="fullName"
                     placeholder={t("booking.fullNamePlaceholder")}
                     required
@@ -160,7 +187,6 @@ export default function BookingForm({
                 <div>
                   <label>{t("booking.phone")}</label>
                   <input
-                    id="phone"
                     name="phone"
                     placeholder={t("booking.phonePlaceholder")}
                     required
@@ -170,7 +196,6 @@ export default function BookingForm({
                 <div style={{ width: "100%" }}>
                   <label>{t("booking.email")}</label>
                   <input
-                    id="email"
                     name="email"
                     type="email"
                     placeholder="example@gmail.com"
@@ -179,42 +204,35 @@ export default function BookingForm({
                 </div>
               </div>
 
-              {/* ROUTE */}
-              <select
-                id="route"
-                name="route"
-                required
-                value={route}
-                onChange={(e) => setRoute(e.target.value)}
-              >
+              {/* ========= ROUTE ========= */}
+              <select value={route} onChange={(e) => setRoute(e.target.value)} required>
                 <option value="">-- Chọn tuyến --</option>
-                {routesData.map(r => (
-                  <option key={r.id} value={r.code}>{r.name}</option>
+                {routesData.map((r) => (
+                  <option key={r.id} value={r.code}>
+                    {r.name}
+                  </option>
                 ))}
               </select>
 
-              {/* CAR TYPE */}
+              {/* ========= CAR TYPE ========= */}
               <select
-                id="carType"
-                name="carType"
-                required
                 value={carType}
                 onChange={(e) => setCarType(e.target.value)}
+                required
               >
                 <option value="">-- Chọn loại xe --</option>
-                {cars.map(car => (
+                {cars.map((car) => (
                   <option key={car.id} value={car.code}>
                     {i18n.language === "vi" ? car.name_vi : car.name_en}
                   </option>
                 ))}
               </select>
 
-              {/* PICKUP - DROPOFF */}
+              {/* ========= PICKUP / DROPOFF ========= */}
               <div className="form-row">
                 <div>
                   <label>{t("booking.pickup")}</label>
                   <input
-                    id="pickupPlace"
                     name="pickupPlace"
                     placeholder={t("booking.pickupPlaceholder")}
                     required
@@ -224,7 +242,6 @@ export default function BookingForm({
                 <div>
                   <label>{t("booking.dropoff")}</label>
                   <input
-                    id="dropoffPlace"
                     name="dropoffPlace"
                     placeholder={t("booking.dropoffPlaceholder")}
                     required
@@ -232,41 +249,52 @@ export default function BookingForm({
                 </div>
               </div>
 
-              {/* PASSENGERS */}
+              {/* ========= PASSENGERS ========= */}
               <div className="form-row">
                 <div>
                   <label>{t("booking.adult")}</label>
                   <div className="number-input">
-                    <button type="button" onClick={() => dec(setAdultCount, 1)}>-</button>
+                    <button
+                      type="button"
+                      onClick={() => dec(setAdultCount, 1)}
+                    >
+                      -
+                    </button>
                     <span>{adultCount}</span>
-                    <button type="button" onClick={() => inc(setAdultCount)}>+</button>
+                    <button type="button" onClick={() => inc(setAdultCount)}>
+                      +
+                    </button>
                   </div>
                 </div>
 
                 <div>
                   <label>{t("booking.child")}</label>
                   <div className="number-input">
-                    <button type="button" onClick={() => dec(setChildCount, 0)}>-</button>
+                    <button type="button" onClick={() => dec(setChildCount, 0)}>
+                      -
+                    </button>
                     <span>{childCount}</span>
-                    <button type="button" onClick={() => inc(setChildCount)}>+</button>
+                    <button type="button" onClick={() => inc(setChildCount)}>
+                      +
+                    </button>
                   </div>
                 </div>
               </div>
 
-              {/* DATE TIME */}
+              {/* ========= DATE / TIME ========= */}
               <div className="form-row">
                 <div>
                   <label>{t("booking.date")}</label>
-                  <input type="date" id="date" name="date" required />
+                  <input type="date" name="date" required />
                 </div>
 
                 <div>
                   <label>{t("booking.time")}</label>
-                  <input type="time" id="time" name="time" required />
+                  <input type="time" name="time" required />
                 </div>
               </div>
 
-              {/* ROUNDTRIP */}
+              {/* ========= ROUND TRIP ========= */}
               <div className="form-row-roundtrip">
                 <div className="switch-wrap">
                   <label className="switch">
@@ -277,45 +305,60 @@ export default function BookingForm({
                     />
                     <span className="slider"></span>
                   </label>
+
                   <span>{t("booking.roundTrip")}</span>
                 </div>
 
+                {/* PRICE BOX (UI ĐẸP) */}
                 {route && carType && (
                   <div className="price-box">
                     <strong>Giá tạm tính:</strong>
-                    <p>{cars.find(c => c.code === carType)?.name_vi}</p>
-                    <p>{totalPrice.toLocaleString()} đ</p>
+                    <p>{cars.find((c) => c.code === carType)?.name_vi}</p>
+                    <p>{totalPrice.toLocaleString("vi-VN")} đ</p>
                   </div>
                 )}
               </div>
 
-              {/* RETURN TRIP */}
+              {/* ========= RETURN ROUND TRIP ========= */}
               {roundTrip && (
                 <div className="form-row">
                   <div>
                     <label>{t("booking.returnDate")}</label>
-                    <input type="date" required value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
+                    <input
+                      type="date"
+                      value={returnDate}
+                      required
+                      onChange={(e) => setReturnDate(e.target.value)}
+                    />
                   </div>
 
                   <div>
                     <label>{t("booking.returnTime")}</label>
-                    <input type="time" required value={returnTime} onChange={(e) => setReturnTime(e.target.value)} />
+                    <input
+                      type="time"
+                      value={returnTime}
+                      required
+                      onChange={(e) => setReturnTime(e.target.value)}
+                    />
                   </div>
                 </div>
               )}
 
-              {/* NOTES */}
+              {/* ========= NOTE ========= */}
               <div>
                 <label>{t("booking.note")}</label>
-                <textarea id="note" name="note" placeholder={t("booking.notePlaceholder")} />
+                <textarea
+                  name="note"
+                  placeholder={t("booking.notePlaceholder")}
+                />
               </div>
 
-              <button className="btn-primary" type="submit">
+              {/* ========= SUBMIT ========= */}
+              <button type="submit" className="btn-primary">
                 ✉ {t("booking.submit")}
               </button>
 
               <p className="note-small">{t("booking.afterSubmit")}</p>
-
             </form>
           </div>
         </div>

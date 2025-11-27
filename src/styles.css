@@ -1033,3 +1033,23 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+.price-box {
+  background: #f2faf7;
+  border-left: 6px solid #2f8f6d;
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin-top: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.price-box strong {
+  font-size: 18px;
+  color: #0d2b29;
+}
+
+.price-box p {
+  margin: 4px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #2f8f6d;
+}
