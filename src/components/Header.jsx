@@ -13,24 +13,23 @@ export default function Header() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const routesDropdownRef = useRef(null);
+  const dropdownRef = useRef(null);
 
-  // ===== FETCH ROUTES =====
+  /* =====================================
+        FETCH ROUTES
+  ====================================== */
   useEffect(() => {
     async function loadRoutes() {
       try {
         setRoutesLoading(true);
-        const res = await fetch("/api/routes"); // cùng domain -> không dính CORS
+        const res = await fetch("/api/routes");
         const json = await res.json();
 
         if (Array.isArray(json.routes)) {
           setRoutes(json.routes);
-        } else {
-          console.error("API /api/routes không trả về routes array", json);
-          setRoutes([]);
-        }
+        } else setRoutes([]);
       } catch (err) {
-        console.error("Lỗi load routes:", err);
+        console.error(err);
         setRoutes([]);
       } finally {
         setRoutesLoading(false);
@@ -40,22 +39,50 @@ export default function Header() {
     loadRoutes();
   }, []);
 
-  // ===== CLOSE DROPDOWN KHI CLICK NGOÀI =====
+  /* =====================================
+        GROUP ROUTES BY REGION
+  ====================================== */
+  function groupRoutes(list) {
+    const groups = {};
+
+    const map = {
+      sg: "Từ Sài Gòn",
+      dl: "Từ Đà Lạt",
+      mn: "Từ Mũi Né",
+      pt: "Từ Phan Thiết",
+      vt: "Từ Vũng Tàu",
+      nt: "Từ Nha Trang",
+    };
+
+    list.forEach((r) => {
+      const prefix = r.code.split("-")[0];
+      const region = map[prefix] ?? "Khác";
+
+      if (!groups[region]) groups[region] = [];
+      groups[region].push(r);
+    });
+
+    return groups;
+  }
+
+  const grouped = groupRoutes(routes);
+
+  /* =====================================
+        CLICK OUTSIDE TO CLOSE
+  ====================================== */
   useEffect(() => {
-    function handleClickOutside(e) {
-      if (
-        routesDropdownRef.current &&
-        !routesDropdownRef.current.contains(e.target)
-      ) {
+    function handleClick(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setShowRoutes(false);
       }
     }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // ===== MOBILE MENU =====
+  /* =====================================
+        MOBILE MENU
+  ====================================== */
   const openMenu = () => {
     setOpen(true);
     document.body.style.overflow = "hidden";
@@ -66,9 +93,7 @@ export default function Header() {
     document.body.style.overflow = "";
   };
 
-  const toggleMenu = () => {
-    open ? closeMenu() : openMenu();
-  };
+  const toggleMenu = () => (open ? closeMenu() : openMenu());
 
   const goToSection = (id) => {
     closeMenu();
@@ -76,25 +101,18 @@ export default function Header() {
     if (location.pathname !== "/") {
       navigate("/");
       setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
       }, 200);
     } else {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
     <>
-      {/* Overlay mobile */}
-      <div
-        className={`overlay ${open ? "show" : ""}`}
-        onClick={closeMenu}
-      ></div>
+      <div className={`overlay ${open ? "show" : ""}`} onClick={closeMenu} />
 
       <header className="site-header">
-        {/* ===== DESKTOP HEADER ===== */}
         <div className="header-desktop">
           <div className="hd-left">
             <a href="/">
@@ -102,66 +120,65 @@ export default function Header() {
             </a>
           </div>
 
+          {/* ================= MENU ================ */}
           <nav className="hd-menu">
             <Link to="/dat-xe">{t("nav.booking")}</Link>
 
-            {/* ===== DROPDOWN BẢNG GIÁ + TUYẾN ĐƯỜNG ===== */}
+            {/* DROPDOWN */}
             <div
               className="nav-dropdown"
-              ref={routesDropdownRef}
+              ref={dropdownRef}
               onMouseEnter={() => setShowRoutes(true)}
             >
-              <button
-                className="nav-btn"
-                onClick={() => setShowRoutes((v) => !v)}
-              >
+              <button className="nav-btn" onClick={() => setShowRoutes(!showRoutes)}>
                 {t("nav.pricing")} ▾
               </button>
 
               {showRoutes && (
                 <div className="dropdown-box">
-                  <div className="dropdown-header">
-                    <div className="dropdown-title">Danh sách tuyến đường</div>
-                    <div className="dropdown-subtitle">
-                      Chọn tuyến để xem chi tiết giá & loại xe
-                    </div>
-                  </div>
+                  <h3 className="dropdown-title">Danh sách tuyến đường</h3>
+                  <p className="dropdown-subtitle">
+                    Chọn tuyến để xem chi tiết giá & loại xe
+                  </p>
 
                   <div className="dropdown-divider" />
 
+                  {/* Loading */}
                   {routesLoading && (
                     <div className="dropdown-empty">Đang tải dữ liệu…</div>
                   )}
 
+                  {/* Empty */}
                   {!routesLoading && routes.length === 0 && (
-                    <div className="dropdown-empty">
-                      Đang cập nhật tuyến đường
-                    </div>
+                    <div className="dropdown-empty">Chưa có dữ liệu tuyến</div>
                   )}
 
-                  {!routesLoading && routes.length > 0 && (
-                    <div className="dropdown-grid">
-                      {routes.map((r) => (
-                        <Link
-                          key={r.id}
-                          to={`/tuyen-duong/${r.code}`}
-                          className="dropdown-item"
-                          onClick={() => setShowRoutes(false)} // đóng khi chọn
-                        >
-                          <span className="route-icon">🚗</span>
-                          <div className="route-text-wrap">
-                            <span className="route-name-main">
-                              {r.name.split("→")[0]?.trim()}
-                              {" → "}
-                            </span>
-                            <span className="route-name-sub">
-                              {r.name.split("→")[1]?.trim()}
-                            </span>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                  {/* GROUPED ROUTES */}
+                  {!routesLoading &&
+                    Object.keys(grouped).map((region) => (
+                      <div key={region} className="route-group">
+                        <div className="route-group-title">{region}</div>
+
+                        <div className="dropdown-grid">
+                          {grouped[region].map((r) => (
+                            <Link
+                              key={r.id}
+                              to={`/tuyen-duong/${r.code}`}
+                              className="dropdown-item"
+                              onClick={() => setShowRoutes(false)}
+                            >
+                              🚗{" "}
+                              <span className="rt-main">
+                                {r.name.split("→")[0]?.trim()} →
+                              </span>
+                              <span className="rt-sub">
+                                {r.name.split("→")[1]?.trim()}
+                              </span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
@@ -170,6 +187,7 @@ export default function Header() {
             <Link to="/lien-he">{t("nav.contact")}</Link>
           </nav>
 
+          {/* LANGUAGE */}
           <div className="lang-switch">
             <button
               className={i18n.language === "vi" ? "active" : ""}
@@ -177,7 +195,6 @@ export default function Header() {
             >
               🇻🇳 VI
             </button>
-
             <button
               className={i18n.language === "en" ? "active" : ""}
               onClick={() => i18n.changeLanguage("en")}
@@ -186,6 +203,7 @@ export default function Header() {
             </button>
           </div>
 
+          {/* HOTLINE */}
           <div className="hd-right">
             <a href="tel:0844232144" className="hotline-btn">
               📞 0844 232 144
@@ -193,7 +211,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* ===== MOBILE HEADER ===== */}
+        {/* MOBILE HEADER */}
         <div className="header-mobile">
           <button
             className={`hamburger ${open ? "active" : ""}`}
@@ -219,27 +237,13 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ===== MOBILE NAV ===== */}
+      {/* MOBILE NAV */}
       <div className={`mobile-nav ${open ? "show" : ""}`}>
-        <button onClick={() => goToSection("dat-xe")}>
-          {t("nav.booking")}
-        </button>
-
-        <button onClick={() => goToSection("bang-gia")}>
-          {t("nav.pricing")}
-        </button>
-
-        <button onClick={() => goToSection("tuyen-duong")}>
-          {t("nav.routes")}
-        </button>
-
-        <button onClick={() => goToSection("faq")}>
-          {t("nav.faq")}
-        </button>
-
-        <button onClick={() => goToSection("lien-he")}>
-          {t("nav.contact")}
-        </button>
+        <button onClick={() => goToSection("dat-xe")}>{t("nav.booking")}</button>
+        <button onClick={() => goToSection("bang-gia")}>{t("nav.pricing")}</button>
+        <button onClick={() => goToSection("tuyen-duong")}>{t("nav.routes")}</button>
+        <button onClick={() => goToSection("faq")}>{t("nav.faq")}</button>
+        <button onClick={() => goToSection("lien-he")}>{t("nav.contact")}</button>
       </div>
     </>
   );

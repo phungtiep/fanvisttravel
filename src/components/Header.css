@@ -471,6 +471,44 @@
   color: #4b5563;
 }
 
+.dropdown-group {
+  padding: 16px 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dropdown-group:last-child {
+  border-bottom: none;
+}
+
+.dropdown-group-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #374151;
+}
+
+.dropdown-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+}
+
+.dropdown-item {
+  padding: 10px;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+  transition: 0.15s;
+}
+
+.dropdown-item:hover {
+  background: #eef2ff;
+  border-color: #6366f1;
+  transform: translateX(3px);
+}
+
+
 /* Responsive: mobile, thu hẹp chiều rộng dropdown */
 @media (max-width: 768px) {
   .dropdown-box {
