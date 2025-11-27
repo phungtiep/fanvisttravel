@@ -1,137 +1,91 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import "./RouteDetail.css";
+import { useParams } from "react-router-dom";
+import BookingForm from "../components/sections/BookingForm";
 
 export default function RouteDetail() {
-  const { code } = useParams();
-
+  const { slug } = useParams();
   const [route, setRoute] = useState(null);
   const [cars, setCars] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [selectedCar, setSelectedCar] = useState(null);
 
-  /* ============================================
-      FETCH ROUTE + CARS DATA
-  ============================================ */
+  // Popup states
+  const [showBooking, setShowBooking] = useState(false);
+  const [selectedRouteCode, setSelectedRouteCode] = useState(null);
+  const [selectedCarType, setSelectedCarType] = useState(null);
+
   useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-        setError("");
-
-        // 1️⃣ Fetch 1 route theo code
-        const resRoute = await fetch(
-          `/api/routes?code=${encodeURIComponent(code)}`
-        );
-        const jsonRoute = await resRoute.json();
-
-        if (jsonRoute.route) {
-          setRoute(jsonRoute.route);
-        } else {
-          setRoute(null);
-          setError("Không tìm thấy tuyến đường này.");
-        }
-
-        // 2️⃣ Fetch cars
-        const resCars = await fetch("/api/cars");
-        const jsonCars = await resCars.json();
-        setCars(jsonCars.cars || []);
-      } catch (e) {
-        console.error(e);
-        setError("Có lỗi khi tải dữ liệu, vui lòng thử lại sau.");
-      } finally {
-        setLoading(false);
-      }
+    async function loadDetail() {
+      const res = await fetch(`/api/route-detail/${slug}`);
+      const json = await res.json();
+      setRoute(json.route || null);
+      setCars(json.cars || []);
     }
+    loadDetail();
+  }, [slug]);
 
-    loadData();
-  }, [code]);
+  if (!route) return <p>Đang tải...</p>;
 
-  if (loading) {
-    return <div className="rd-loading">Đang tải dữ liệu…</div>;
-  }
-
-  if (!route) {
-    return (
-      <div className="rd-notfound">
-        {error || "Không tìm thấy tuyến đường"}
-        <div style={{ marginTop: 12 }}>
-          <Link to="/">← Quay lại trang chủ</Link>
-        </div>
-      </div>
-    );
-  }
-
-  /* ============================================
-      PRICE MAPPING – CHUẨN XÁC 100%
-  ============================================ */
-  const PRICE_FROM_CODE = {
-    "4-ch": route.price_4,
-    "7-ch": route.price_7,
-    carnival: route.price_carnival,
-    sedona: route.price_sedona,
-    "limo-9": route.price_9,
-    "limo-11": route.price_11,
-    "16-ch": route.price_16,
-    "limo-19": route.price_19,
-    "limo-24": route.price_24,
-    "29-ch": route.price_29,
-    "45-ch": route.price_45,
-  };
-
-  // Chỉ lấy những xe thực sự có giá cho tuyến này
-  const carsWithPrice = cars.filter(
-    (car) => PRICE_FROM_CODE[car.code] != null
-  );
-
-  /* ============================================
-      FORMAT GIÁ
-  ============================================ */
-  const formatPrice = (v) =>
-    v != null ? v.toLocaleString("vi-VN") + " đ" : "Liên hệ";
-
-  /* ============================================
-      UI RENDER – DANH SÁCH XE
-  ============================================ */
   return (
-    <div className="rd-container">
-      {/* TITLE */}
-      <h1 className="rd-title">{route.name}</h1>
-      <p className="rd-subtitle">Bảng giá & các loại xe áp dụng</p>
+    <>
+      <section className="route-detail container">
+        <h1 className="route-title">{route.name}</h1>
+        <p>{route.description}</p>
 
-      {/* CARS GRID */}
-      <div className="rd-grid">
-        {carsWithPrice.map((car) => {
-          const price = PRICE_FROM_CODE[car.code];
+        <h2 className="section-title">Các loại xe</h2>
 
-          return (
-            <div className="rd-card" key={car.id}>
-              {/* IMAGE */}
-              <div className="rd-img-box">
-                <img
-                  src={car.image_url || "/car-placeholder.webp"}
-                  alt={car.name_vi}
-                  className="rd-img"
-                />
-              </div>
-
-              {/* NAME */}
-              <div className="rd-car-name">{car.name_vi}</div>
-
-              {/* PRICE */}
-              <div className="rd-price">{formatPrice(price)}</div>
-
-              {/* ACTION */}
-              <Link
-                to="/dat-xe"
-                state={{ route: route.code, car: car.code }}
-              >
-                <button className="rd-btn">Đặt xe ngay</button>
-              </Link>
+        <div className="car-list">
+          {cars.map((car) => (
+            <div
+              key={car.id}
+              className={`car-card ${
+                selectedCar?.id === car.id ? "selected" : ""
+              }`}
+              onClick={() => setSelectedCar(car)}
+            >
+              <h3>{car.name_vi}</h3>
+              <p>Số chỗ: {car.seat_count}</p>
+              <p>Giá: {car.price.toLocaleString()}đ</p>
             </div>
-          );
-        })}
-      </div>
-    </div>
+          ))}
+        </div>
+
+        {/* BUTTON ĐẶT XE */}
+        <button
+          className="btn-primary"
+          onClick={() => {
+            setSelectedRouteCode(route.code);
+            setSelectedCarType(selectedCar?.code);
+            setShowBooking(true);
+          }}
+        >
+          Đặt Xe Ngay
+        </button>
+      </section>
+
+      {/* POPUP BOOKING FORM */}
+      {showBooking && (
+        <div
+          className="booking-popup-overlay"
+          onClick={() => setShowBooking(false)}
+        >
+          <div
+            className="booking-popup"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="close-btn"
+              onClick={() => setShowBooking(false)}
+            >
+              ✕
+            </button>
+
+            <BookingForm
+              defaultRouteCode={selectedRouteCode}
+              defaultCarType={selectedCarType}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
