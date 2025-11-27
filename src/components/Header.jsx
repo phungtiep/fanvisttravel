@@ -5,21 +5,25 @@ import "./Header.css";
 
 export default function Header() {
   const { t, i18n } = useTranslation();
+
   const [open, setOpen] = useState(false);
-  const [routes, setRoutes] = useState([]);
-  const [showRouteMenu, setShowRouteMenu] = useState(false);
+  const [showRoutes, setShowRoutes] = useState(false);   // ⭐ dropdown state
+  const [routes, setRoutes] = useState([]);              // ⭐ list routes
+  const [routesLoading, setRoutesLoading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  // ===== FETCH ROUTES =====
+  // ========== LOAD ROUTES ==========
   useEffect(() => {
     async function loadRoutes() {
       try {
+        setRoutesLoading(true);
+
+        // Ở môi trường production (cùng domain) dùng đường dẫn tương đối:
         const res = await fetch("/api/routes");
         const json = await res.json();
 
-        // API trả về { routes: [...] }
         if (Array.isArray(json.routes)) {
           setRoutes(json.routes);
         } else {
@@ -29,13 +33,15 @@ export default function Header() {
       } catch (err) {
         console.error("Lỗi load routes:", err);
         setRoutes([]);
+      } finally {
+        setRoutesLoading(false);
       }
     }
 
     loadRoutes();
   }, []);
 
-  // ===== MOBILE MENU =====
+  // ========== MENU MOBILE ==========
   const openMenu = () => {
     setOpen(true);
     document.body.style.overflow = "hidden";
@@ -67,11 +73,14 @@ export default function Header() {
 
   return (
     <>
-      {/* ===== Overlay ===== */}
-      <div className={`overlay ${open ? "show" : ""}`} onClick={closeMenu}></div>
+      {/* Overlay */}
+      <div
+        className={`overlay ${open ? "show" : ""}`}
+        onClick={closeMenu}
+      ></div>
 
       <header className="site-header">
-        {/* ▬▬▬▬▬ DESKTOP HEADER ▬▬▬▬▬ */}
+        {/* ===== DESKTOP HEADER ===== */}
         <div className="header-desktop">
           <div className="hd-left">
             <a href="/">
@@ -82,27 +91,46 @@ export default function Header() {
           <nav className="hd-menu">
             <Link to="/dat-xe">{t("nav.booking")}</Link>
 
-            {/* ⭐ DROPDOWN GỘP BẢNG GIÁ + TUYẾN ĐƯỜNG */}
+            {/* ⭐ DROPDOWN BẢNG GIÁ + TUYẾN ĐƯỜNG */}
             <div
-              className="menu-dropdown"
-              onMouseEnter={() => setShowRouteMenu(true)}
-              onMouseLeave={() => setShowRouteMenu(false)}
+              className="nav-dropdown"
+              onMouseEnter={() => setShowRoutes(true)}
+              onMouseLeave={() => setShowRoutes(false)}
             >
-              <button className="menu-btn">
-                {t("nav.pricing")} <span className="arrow">▼</span>
+              <button className="nav-btn">
+                Bảng giá & Tuyến đường ▾
               </button>
 
-              {showRouteMenu && (
-                <div className="dropdown-panel">
-                  {routes.map((r) => (
-                    <Link
-                      key={r.code}
-                      to={`/tuyen-duong/${r.code}`}
-                      className="dropdown-item"
-                    >
-                      {r.name}
-                    </Link>
-                  ))}
+              {showRoutes && (
+                <div className="dropdown-box">
+                  <div className="dropdown-title">
+                    Danh sách tuyến đường
+                  </div>
+
+                  {routesLoading && (
+                    <div className="dropdown-empty">Đang tải dữ liệu…</div>
+                  )}
+
+                  {!routesLoading && routes.length === 0 && (
+                    <div className="dropdown-empty">
+                      Đang cập nhật tuyến đường
+                    </div>
+                  )}
+
+                  {!routesLoading && routes.length > 0 && (
+                    <div className="dropdown-grid">
+                      {routes.map((r) => (
+                        <Link
+                          key={r.id}
+                          to={`/tuyen-duong/${r.code}`}
+                          className="dropdown-item"
+                        >
+                          <span className="route-icon">🚗</span>
+                          <span className="route-text">{r.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -111,7 +139,6 @@ export default function Header() {
             <Link to="/lien-he">{t("nav.contact")}</Link>
           </nav>
 
-          {/* LANG SWITCH */}
           <div className="lang-switch">
             <button
               className={i18n.language === "vi" ? "active" : ""}
@@ -119,6 +146,7 @@ export default function Header() {
             >
               🇻🇳 VI
             </button>
+
             <button
               className={i18n.language === "en" ? "active" : ""}
               onClick={() => i18n.changeLanguage("en")}
@@ -134,13 +162,16 @@ export default function Header() {
           </div>
         </div>
 
-        {/* ▬▬▬▬▬ MOBILE HEADER ▬▬▬▬▬ */}
+        {/* ===== MOBILE HEADER ===== */}
         <div className="header-mobile">
           <button
             className={`hamburger ${open ? "active" : ""}`}
             onClick={toggleMenu}
+            aria-label="Mở menu"
           >
-            <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
 
           <a href="tel:0844232144" className="hotline-btn mobile-hotline">
@@ -148,38 +179,28 @@ export default function Header() {
           </a>
 
           <a href="/">
-            <img src="/logo.webp" className="site-logo mobile-logo" alt="Fanvist Travel" />
+            <img
+              src="/logo.webp"
+              className="site-logo mobile-logo"
+              alt="Thue xe di phan thiet"
+            />
           </a>
         </div>
       </header>
 
-      {/* ▬▬▬▬▬ MOBILE MENU ▬▬▬▬▬ */}
+      {/* ===== MOBILE NAV ===== */}
       <div className={`mobile-nav ${open ? "show" : ""}`}>
         <button onClick={() => goToSection("dat-xe")}>
           {t("nav.booking")}
         </button>
 
-        <button
-          onClick={() => setShowRouteMenu((prev) => !prev)}
-        >
-          {t("nav.pricing_routes")}
+        <button onClick={() => goToSection("bang-gia")}>
+          {t("nav.pricing")}
         </button>
 
-        {showRouteMenu && (
-          <div className="mobile-routes">
-            {routes.map((r) => (
-              <button
-                key={r.code}
-                onClick={() => {
-                  closeMenu();
-                  navigate(`/tuyen-duong/${r.code}`);
-                }}
-              >
-                {r.name}
-              </button>
-            ))}
-          </div>
-        )}
+        <button onClick={() => goToSection("tuyen-duong")}>
+          {t("nav.routes")}
+        </button>
 
         <button onClick={() => goToSection("faq")}>
           {t("nav.faq")}
