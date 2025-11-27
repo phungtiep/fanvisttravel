@@ -119,7 +119,7 @@ export default function RouteDetail() {
                                 <div className="rd-price">{formatPrice(price)}</div>
 
                                 <button
-                                    className="btn-primary"
+                                    className="rd-btn"
                                     onClick={() => {
                                         setSelectedRouteCode(route.code);
                                         setSelectedCarType(car.code);  // << ✔ CHUẨN
