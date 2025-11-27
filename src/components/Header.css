@@ -492,3 +492,41 @@
 .route-name-sub {
   color: #333 !important;
 }
+.routes-mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.routes-mobile-panel {
+  background: #fff;
+  width: 100%;
+  max-height: 80vh;
+  border-radius: 18px 18px 0 0;
+  padding: 16px 18px;
+  overflow-y: auto;
+}
+
+.routes-mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.routes-mobile-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+}
+
+.dropdown-grid-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

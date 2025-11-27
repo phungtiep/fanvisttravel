@@ -7,7 +7,8 @@ export default function Header() {
   const { t, i18n } = useTranslation();
 
   const [open, setOpen] = useState(false);
-  const [showRoutes, setShowRoutes] = useState(false);
+  const [showRoutes, setShowRoutes] = useState(false);          // desktop dropdown
+  const [showRoutesMobile, setShowRoutesMobile] = useState(false); // mobile panel
   const [routes, setRoutes] = useState([]);
   const [routesLoading, setRoutesLoading] = useState(false);
 
@@ -27,9 +28,11 @@ export default function Header() {
 
         if (Array.isArray(json.routes)) {
           setRoutes(json.routes);
-        } else setRoutes([]);
+        } else {
+          setRoutes([]);
+        }
       } catch (err) {
-        console.error(err);
+        console.error("loadRoutes error:", err);
         setRoutes([]);
       } finally {
         setRoutesLoading(false);
@@ -67,9 +70,7 @@ export default function Header() {
 
   const grouped = groupRoutes(routes);
 
-  /* =====================================
-       👉 ĐẨY "Từ Sài Gòn" LÊN ĐẦU
-  ====================================== */
+  // 🔽 ĐẨY "Từ Sài Gòn" LÊN ĐẦU
   const groupedOrdered = (() => {
     const sg = "Từ Sài Gòn";
     const out = {};
@@ -84,7 +85,7 @@ export default function Header() {
   })();
 
   /* =====================================
-        CLICK OUTSIDE TO CLOSE
+        CLICK OUTSIDE TO CLOSE (DESKTOP DROPDOWN)
   ====================================== */
   useEffect(() => {
     function handleClick(e) {
@@ -113,6 +114,7 @@ export default function Header() {
 
   const goToSection = (id) => {
     closeMenu();
+    setShowRoutesMobile(false);
 
     if (location.pathname !== "/") {
       navigate("/");
@@ -124,11 +126,20 @@ export default function Header() {
     }
   };
 
+  const goToRoutePage = (code) => {
+    // dùng cho mobile
+    setShowRoutesMobile(false);
+    closeMenu();
+    navigate(`/tuyen-duong/${code}`);
+  };
+
   return (
     <>
+      {/* overlay cho mobile nav */}
       <div className={`overlay ${open ? "show" : ""}`} onClick={closeMenu} />
 
       <header className="site-header">
+        {/* ============ DESKTOP HEADER ============ */}
         <div className="header-desktop">
           <div className="hd-left">
             <a href="/">
@@ -136,17 +147,20 @@ export default function Header() {
             </a>
           </div>
 
-          {/* ================= MENU ================ */}
+          {/* MENU DESKTOP */}
           <nav className="hd-menu">
             <Link to="/dat-xe">{t("nav.booking")}</Link>
 
-            {/* DROPDOWN */}
+            {/* DROPDOWN DESKTOP */}
             <div
               className="nav-dropdown"
               ref={dropdownRef}
               onMouseEnter={() => setShowRoutes(true)}
             >
-              <button className="nav-btn" onClick={() => setShowRoutes(!showRoutes)}>
+              <button
+                className="nav-btn"
+                onClick={() => setShowRoutes((v) => !v)}
+              >
                 {t("nav.pricing")} ▾
               </button>
 
@@ -159,17 +173,14 @@ export default function Header() {
 
                   <div className="dropdown-divider" />
 
-                  {/* Loading */}
                   {routesLoading && (
                     <div className="dropdown-empty">Đang tải dữ liệu…</div>
                   )}
 
-                  {/* Empty */}
                   {!routesLoading && routes.length === 0 && (
                     <div className="dropdown-empty">Chưa có dữ liệu tuyến</div>
                   )}
 
-                  {/* GROUPED ROUTES — ĐÃ ĐẨY SG LÊN ĐẦU */}
                   {!routesLoading &&
                     Object.keys(groupedOrdered).map((region) => (
                       <div key={region} className="route-group">
@@ -227,7 +238,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* MOBILE HEADER */}
+        {/* ============ MOBILE HEADER ============ */}
         <div className="header-mobile">
           <button
             className={`hamburger ${open ? "active" : ""}`}
@@ -253,14 +264,70 @@ export default function Header() {
         </div>
       </header>
 
-      {/* MOBILE NAV */}
+      {/* ============ MOBILE NAV ============ */}
       <div className={`mobile-nav ${open ? "show" : ""}`}>
         <button onClick={() => goToSection("dat-xe")}>{t("nav.booking")}</button>
-        <button onClick={() => goToSection("bang-gia")}>{t("nav.pricing")}</button>
-        <button onClick={() => goToSection("tuyen-duong")}>{t("nav.routes")}</button>
+
+        {/* Nút mở panel tuyến đường trên mobile */}
+        <button onClick={() => setShowRoutesMobile(true)}>
+          {t("nav.pricing")} & {t("nav.routes")}
+        </button>
+
         <button onClick={() => goToSection("faq")}>{t("nav.faq")}</button>
         <button onClick={() => goToSection("lien-he")}>{t("nav.contact")}</button>
       </div>
+
+      {/* ============ MOBILE ROUTES PANEL ============ */}
+      {showRoutesMobile && (
+        <div className="routes-mobile-overlay">
+          <div className="routes-mobile-panel">
+            <div className="routes-mobile-header">
+              <span>Chọn tuyến đường</span>
+              <button
+                className="routes-mobile-close"
+                onClick={() => setShowRoutesMobile(false)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="routes-mobile-body">
+              {routesLoading && (
+                <div className="dropdown-empty">Đang tải dữ liệu…</div>
+              )}
+
+              {!routesLoading && routes.length === 0 && (
+                <div className="dropdown-empty">Chưa có dữ liệu tuyến</div>
+              )}
+
+              {!routesLoading &&
+                Object.keys(groupedOrdered).map((region) => (
+                  <div key={region} className="route-group">
+                    <div className="route-group-title">{region}</div>
+
+                    <div className="dropdown-grid-mobile">
+                      {groupedOrdered[region].map((r) => (
+                        <button
+                          key={r.id}
+                          className="dropdown-item"
+                          onClick={() => goToRoutePage(r.code)}
+                        >
+                          🚗{" "}
+                          <span className="rt-main">
+                            {r.name.split("→")[0]?.trim()} →
+                          </span>
+                          <span className="rt-sub">
+                            {r.name.split("→")[1]?.trim()}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
