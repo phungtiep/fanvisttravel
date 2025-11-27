@@ -1,32 +1,35 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./RouteDetail.css";
 
 export default function RouteDetail() {
   const { code } = useParams();
+
   const [route, setRoute] = useState(null);
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ===================== Load API =====================
+  /* ============================================
+      FETCH ROUTE + CARS DATA
+  ============================================ */
   useEffect(() => {
     async function loadData() {
       try {
         setLoading(true);
 
-        // 1. Lấy danh sách tuyến
-        const routeRes = await fetch(`/api/routes`);
-        const routeJson = await routeRes.json();
+        // 1️⃣ Fetch route chi tiết
+        const resRoute = await fetch(`/api/routes?code=${code}`);
+        const jsonRoute = await resRoute.json();
 
-        const found = routeJson.routes.find((r) => r.code === code);
-        setRoute(found || null);
+        if (!jsonRoute?.routes?.length) return setRoute(null);
+        const r = jsonRoute.routes[0];
 
-        // 2. Lấy danh sách xe
-        const carRes = await fetch(`/api/cars`);
-        const carJson = await carRes.json();
-        setCars(carJson.cars || []);
-      } catch (err) {
-        console.error("Load route detail failed:", err);
+        // 2️⃣ Fetch cars
+        const resCars = await fetch("/api/cars");
+        const jsonCars = await resCars.json();
+
+        setRoute(r);
+        setCars(jsonCars.cars || []);
       } finally {
         setLoading(false);
       }
@@ -35,80 +38,70 @@ export default function RouteDetail() {
     loadData();
   }, [code]);
 
-  if (loading)
-    return <div className="route-loading">Đang tải dữ liệu…</div>;
+  if (loading) return <div className="rd-loading">Đang tải dữ liệu…</div>;
+  if (!route) return <div className="rd-notfound">Không tìm thấy tuyến đường</div>;
 
-  if (!route)
-    return (
-      <div className="route-notfound">
-        Không tìm thấy tuyến đường.
-        <Link to="/" className="route-back">← Quay về trang chủ</Link>
-      </div>
-    );
-
-  // Map các giá theo key đúng trong bảng routes
-  const PRICE_MAP = {
-    4: route.price_4,
-    7: route.price_7,
-    9: route.price_9,
-    11: route.price_11,
-    16: route.price_16,
-    19: route.price_19,
-    24: route.price_24,
-    29: route.price_29,
-    45: route.price_45,
-    carnival: route.price_carnival,
-    sedona: route.price_sedona,
+  /* ============================================
+      PRICE MAPPING – CHUẨN XÁC 100%
+  ============================================ */
+  const PRICE_FROM_CODE = {
+    "4-ch": route.price_4,
+    "7-ch": route.price_7,
+    "carnival": route.price_carnival,
+    "sedona": route.price_sedona,
+    "limo-9": route.price_9,
+    "limo-11": route.price_11,
+    "16-ch": route.price_16,
+    "limo-19": route.price_19,
+    "limo-24": route.price_24,
+    "29-ch": route.price_29,
+    "45-ch": route.price_45,
   };
 
+  /* ============================================
+      FORMAT GIÁ
+  ============================================ */
+  const formatPrice = (v) =>
+    v ? v.toLocaleString("vi-VN") + " đ" : "Liên hệ";
+
+  /* ============================================
+      UI RENDER – DANH SÁCH XE
+  ============================================ */
   return (
-    <div className="route-detail-container">
+    <div className="rd-container">
+      {/* TITLE */}
+      <h1 className="rd-title">{route.name}</h1>
+      <p className="rd-subtitle">Bảng giá & các loại xe áp dụng</p>
 
-      {/* Title */}
-      <h1 className="route-title">{route.name}</h1>
-      <p className="route-subtitle">Bảng giá & các loại xe áp dụng</p>
-
-      {/* GRID CAR LIST */}
-      <div className="car-grid">
+      {/* CARS GRID */}
+      <div className="rd-grid">
         {cars.map((car) => {
-          const price =
-            PRICE_MAP[car.seat_count] ??
-            PRICE_MAP[car.code] ??
-            null;
-
-          if (!price) return null; // xe không hỗ trợ tuyến này → bỏ qua
+          const price = PRICE_FROM_CODE[car.code];
 
           return (
-            <div className="car-card" key={car.id}>
-              <img
-                src={car.image_url}
-                alt={car.name_vi}
-                className="car-img"
-              />
-
-              <div className="car-info">
-                <h3 className="car-name">
-                  {car.name_vi} ({car.seat_count} chỗ)
-                </h3>
-
-                <div className="car-price">
-                  {price.toLocaleString("vi-VN")} đ
-                </div>
-
-                <Link to="/dat-xe" className="car-book-btn">
-                  Đặt xe ngay
-                </Link>
+            <div className="rd-card" key={car.id}>
+              {/* IMAGE */}
+              <div className="rd-img-box">
+                <img
+                  src={car.image_url || "/car-placeholder.webp"}
+                  alt={car.name_vi}
+                  className="rd-img"
+                />
               </div>
+
+              {/* NAME */}
+              <div className="rd-car-name">{car.name_vi}</div>
+
+              {/* PRICE */}
+              <div className="rd-price">{formatPrice(price)}</div>
+
+              {/* ACTION */}
+              <Link to="/dat-xe" state={{ route: route.code, car: car.code }}>
+                <button className="rd-btn">Đặt xe ngay</button>
+              </Link>
             </div>
           );
         })}
-      </div>
-
-      {/* Back */}
-      <div className="route-bottom">
-        <Link to="/" className="route-back-btn">
-          ← Quay về trang chủ
-        </Link>
       </div>
     </div>
   );
