@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
@@ -7,21 +7,20 @@ export default function Header() {
   const { t, i18n } = useTranslation();
 
   const [open, setOpen] = useState(false);
-  const [showRoutes, setShowRoutes] = useState(false);   // ⭐ dropdown state
-  const [routes, setRoutes] = useState([]);              // ⭐ list routes
+  const [showRoutes, setShowRoutes] = useState(false);
+  const [routes, setRoutes] = useState([]);
   const [routesLoading, setRoutesLoading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
+  const routesDropdownRef = useRef(null);
 
-  // ========== LOAD ROUTES ==========
+  // ===== FETCH ROUTES =====
   useEffect(() => {
     async function loadRoutes() {
       try {
         setRoutesLoading(true);
-
-        // Ở môi trường production (cùng domain) dùng đường dẫn tương đối:
-        const res = await fetch("/api/routes");
+        const res = await fetch("/api/routes"); // cùng domain -> không dính CORS
         const json = await res.json();
 
         if (Array.isArray(json.routes)) {
@@ -41,7 +40,22 @@ export default function Header() {
     loadRoutes();
   }, []);
 
-  // ========== MENU MOBILE ==========
+  // ===== CLOSE DROPDOWN KHI CLICK NGOÀI =====
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (
+        routesDropdownRef.current &&
+        !routesDropdownRef.current.contains(e.target)
+      ) {
+        setShowRoutes(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // ===== MOBILE MENU =====
   const openMenu = () => {
     setOpen(true);
     document.body.style.overflow = "hidden";
@@ -73,7 +87,7 @@ export default function Header() {
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay mobile */}
       <div
         className={`overlay ${open ? "show" : ""}`}
         onClick={closeMenu}
@@ -91,21 +105,29 @@ export default function Header() {
           <nav className="hd-menu">
             <Link to="/dat-xe">{t("nav.booking")}</Link>
 
-            {/* ⭐ DROPDOWN BẢNG GIÁ + TUYẾN ĐƯỜNG */}
+            {/* ===== DROPDOWN BẢNG GIÁ + TUYẾN ĐƯỜNG ===== */}
             <div
               className="nav-dropdown"
+              ref={routesDropdownRef}
               onMouseEnter={() => setShowRoutes(true)}
-              onMouseLeave={() => setShowRoutes(false)}
             >
-              <button className="nav-btn">
-                Bảng giá & Tuyến đường ▾
+              <button
+                className="nav-btn"
+                onClick={() => setShowRoutes((v) => !v)}
+              >
+                {t("nav.pricing")} ▾
               </button>
 
               {showRoutes && (
                 <div className="dropdown-box">
-                  <div className="dropdown-title">
-                    Danh sách tuyến đường
+                  <div className="dropdown-header">
+                    <div className="dropdown-title">Danh sách tuyến đường</div>
+                    <div className="dropdown-subtitle">
+                      Chọn tuyến để xem chi tiết giá & loại xe
+                    </div>
                   </div>
+
+                  <div className="dropdown-divider" />
 
                   {routesLoading && (
                     <div className="dropdown-empty">Đang tải dữ liệu…</div>
@@ -124,9 +146,18 @@ export default function Header() {
                           key={r.id}
                           to={`/tuyen-duong/${r.code}`}
                           className="dropdown-item"
+                          onClick={() => setShowRoutes(false)} // đóng khi chọn
                         >
                           <span className="route-icon">🚗</span>
-                          <span className="route-text">{r.name}</span>
+                          <div className="route-text-wrap">
+                            <span className="route-name-main">
+                              {r.name.split("→")[0]?.trim()}
+                              {" → "}
+                            </span>
+                            <span className="route-name-sub">
+                              {r.name.split("→")[1]?.trim()}
+                            </span>
+                          </div>
                         </Link>
                       ))}
                     </div>
