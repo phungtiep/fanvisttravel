@@ -1,0 +1,49 @@
+{
+  "routes": {
+    "home": "Trang chủ",
+
+    "pt": {
+      "title": "Xe riêng Sài Gòn → Phan Thiết / Mũi Né",
+      "h1": "Thuê xe riêng Sài Gòn đi Phan Thiết / Mũi Né giá tốt nhất",
+      "subtitle": "Xe 4–7–16 chỗ đời mới, tài xế kinh nghiệm, giá trọn gói, đón tận nơi tại SG.",
+      "cta": "Đặt xe ngay",
+
+      "whyTitle": "Lý do bạn nên chọn xe riêng?",
+      "why": [
+        "Xe đời mới, máy lạnh mạnh, ghế ngả thoải mái.",
+        "Tài xế kinh nghiệm cung đường Phan Thiết.",
+        "Giá trọn gói – không phụ thu.",
+        "Không ghép khách, không trung chuyển.",
+        "Hỗ trợ ghế trẻ em miễn phí.",
+        "Dừng nghỉ linh hoạt theo yêu cầu."
+      ],
+
+      "priceTitle": "Bảng giá thuê xe riêng Sài Gòn → Phan Thiết / Mũi Né",
+
+      "table": {
+        "car": "Loại xe",
+        "pt": "Giá đi Phan Thiết",
+        "mn": "Giá đi Mũi Né",
+        "c4": "Xe 4 chỗ",
+        "c7": "Xe 7 chỗ",
+        "c16": "Xe 16 chỗ"
+      },
+
+      "priceNote": "Giá đã bao gồm phí cao tốc – tài xế – cầu đường.",
+
+      "routeTitle": "Lộ trình di chuyển",
+      "route": [
+        "Đón tận nơi tại SG / Sân bay Tân Sơn Nhất.",
+        "Đi cao tốc Long Thành – Dầu Giây – Phan Thiết.",
+        "Dừng nghỉ ăn uống – vệ sinh theo yêu cầu.",
+        "Trả khách tận nơi tại Phan Thiết / Mũi Né."
+      ],
+
+      "faqTitle": "Câu hỏi thường gặp",
+      "faq": [
+        { "q": "Đi SG → Phan Thiết bao lâu?", "a": "Khoảng 3 – 3.5 giờ." },
+        { "q": "Có ghép khách không?", "a": "Không, tất cả là xe riêng." }
+      ]
+    }
+  }
+}

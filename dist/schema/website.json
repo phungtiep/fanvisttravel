@@ -1,0 +1,11 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://thuexephanthiet.info.vn",
+  "name": "Fanvist Travel",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://thuexephanthiet.info.vn/?s={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}

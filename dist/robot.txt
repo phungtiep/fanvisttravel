@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thuexephanthiet.info.vn/sitemap.xml

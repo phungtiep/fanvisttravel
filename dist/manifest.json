@@ -1,0 +1,15 @@
+{
+  "name": "Thuê xe riêng Sài Gòn đi Phan Thiết – Mũi Né - Đà Lạt – Nha Trang - Các tỉnh",
+  "short_name": "Thuê xe Phan Thiết",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0a8c7d",
+  "icons": [
+    {
+      "src": "/logo.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    }
+  ]
+}

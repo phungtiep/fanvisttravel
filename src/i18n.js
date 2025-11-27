@@ -13,7 +13,7 @@ const resources = {
       },
       nav: {
         booking: 'Đặt xe',
-        pricing: 'Bảng giá',
+        pricing: 'Bảng giá và Tuyến đường',
         routes: 'Tuyến đường',
         faq: 'Hỏi đáp',
         contact: 'Liên hệ'
@@ -193,7 +193,7 @@ const resources = {
       },
       nav: {
         booking: 'Book a car',
-        pricing: 'Pricing',
+        pricing: 'Pricing and Routes',
         routes: 'Routes',
         faq: 'FAQ',
         contact: 'Contact'
