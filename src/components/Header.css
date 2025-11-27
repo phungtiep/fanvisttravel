@@ -480,3 +480,15 @@
 .rt-sub {
   color: #444;
 }
+.dropdown-box,
+.dropdown-box * {
+  color: #222 !important;   /* đổi từ trắng sang đen */
+}
+.dropdown-item {
+  color: #222 !important;
+}
+
+.route-name-main,
+.route-name-sub {
+  color: #333 !important;
+}
