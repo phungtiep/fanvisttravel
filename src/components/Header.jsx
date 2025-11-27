@@ -17,12 +17,21 @@ export default function Header() {
     async function loadRoutes() {
       try {
         const res = await fetch("/api/routes");
-        const data = await res.json();
-        setRoutes(data || []);
+        const json = await res.json();
+
+        // API trả về { routes: [...] }
+        if (Array.isArray(json.routes)) {
+          setRoutes(json.routes);
+        } else {
+          console.error("API /api/routes không trả về routes array", json);
+          setRoutes([]);
+        }
       } catch (err) {
         console.error("Lỗi load routes:", err);
+        setRoutes([]);
       }
     }
+
     loadRoutes();
   }, []);
 
