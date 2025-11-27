@@ -12,6 +12,8 @@ import BangGia from "./pages/BangGia";
 import TuyenDuong from "./pages/TuyenDuong";
 import FAQPage from "./pages/FAQPage";
 import LienHe from "./pages/LienHe";
+import RouteDetail from "./pages/RouteDetail";
+
 
 export default function App() {
   return (
@@ -28,6 +30,8 @@ export default function App() {
         <Route path="/lien-he" element={<LienHe />} />
         {/* Thêm các route khác sau này */}
         {/* <Route path="/sgn-muine" element={<RouteSGNMuiNe />} /> */}
+        <Route path="/tuyen-duong/:code" element={<RouteDetail />} />
+
       </Routes>
       <FloatingButtons />
       <Footer />
