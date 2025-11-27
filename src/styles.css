@@ -841,6 +841,7 @@ textarea:focus {
 .form-row-roundtrip {
   display: flex;
   align-items: center;
+  margin: 12px;
 }
 /* Container */
 .switch-wrap {
