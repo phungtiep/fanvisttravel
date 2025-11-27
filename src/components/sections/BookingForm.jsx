@@ -16,7 +16,6 @@ export default function BookingForm({
   const inc = (setter, max = 50) => setter(prev => Math.min(max, prev + 1));
   const dec = (setter, min = 0) => setter(prev => Math.max(min, prev - 1));
 
-  // Receive data from RouteDetail
   const [carType, setCarType] = useState(defaultCarType);
   const [route, setRoute] = useState(defaultRouteCode);
 
@@ -31,17 +30,8 @@ export default function BookingForm({
 
 
   /** ==========================
-   *  PRICE TABLE
+   * LOAD ROUTES + CARS
    =========================== */
-  const PRICE_TABLE = {
-    "sg-pt": { price: { "4-ch": 1200000, "7-ch": 1400000, "16-ch": 2200000, "29-ch": 4000000 }},
-    "sg-mn": { price: { "4-ch": 1300000, "7-ch": 1500000, "16-ch": 2300000, "29-ch": 2700000 }},
-    "sg-nt": { price: { "4-ch": 2800000, "7-ch": 3200000, "16-ch": 4200000, "29-ch": 7000000 }},
-  };
-
-  /** ====================================================
-   *  LOAD ROUTES + CARS
-   ==================================================== */
   useEffect(() => {
     fetch("/api/routes")
       .then(res => res.json())
@@ -49,19 +39,11 @@ export default function BookingForm({
   }, []);
 
   useEffect(() => {
-    async function loadCars() {
-      try {
-        const res = await fetch("/api/cars");
-        const json = await res.json();
-        setCars(json.cars);
-      } catch (e) {
-        console.error("Load cars failed:", e);
-      }
-    }
-    loadCars();
+    fetch("/api/cars")
+      .then(res => res.json())
+      .then(data => setCars(data.cars || []));
   }, []);
 
-  // When RouteDetail updates selections
   useEffect(() => {
     if (defaultRouteCode) setRoute(defaultRouteCode);
   }, [defaultRouteCode]);
@@ -72,24 +54,7 @@ export default function BookingForm({
 
 
   /** ==========================
-   * TÍNH GIÁ REALTIME
-   =========================== */
-  useEffect(() => {
-    if (!route || !carType) {
-      setTotalPrice(0);
-      return;
-    }
-
-    const basePrice = PRICE_TABLE?.[route]?.price?.[carType] || 0;
-    let price = basePrice;
-    if (roundTrip) price *= 2;
-
-    setTotalPrice(price);
-  }, [route, carType, roundTrip]);
-
-
-  /** ==========================
-   *  SUBMIT BOOKING
+   * SUBMIT
    =========================== */
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,23 +62,19 @@ export default function BookingForm({
 
     const form = e.target;
 
-    // Dùng route thật từ API, không dùng ROUTE_MAP nữa
-    const mappedRoute = form.route.value;
-    const mappedCar = carType;
-
     const data = {
       fullName: form.fullName.value.trim(),
       phone: form.phone.value.trim(),
       email: form.email.value.trim(),
-      route: mappedRoute,
-      carType: mappedCar,
+      route: form.route.value,      // FIXED
+      carType,
       pickupPlace: form.pickupPlace.value.trim(),
       dropoffPlace: form.dropoffPlace.value.trim(),
       date: form.date.value,
       time: form.time.value,
       roundTrip,
-      returnDate: roundTrip ? returnDate : null,
-      returnTime: roundTrip ? returnTime : null,
+      returnDate,
+      returnTime,
       note: form.note.value.trim(),
       adultCount,
       childCount,
@@ -126,38 +87,40 @@ export default function BookingForm({
       const res = await fetch("/api/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
       });
 
       const result = await res.json();
 
       if (result.status === "ok") {
 
-        // IMPORTANT FIX — tắt loading TRƯỚC khi popup đóng
+        // tắt loading TRƯỚC khi đóng popup
         setLoading(false);
 
         setSuccess(true);
         form.reset();
 
-        // Close popup from parent
         onSuccess();
 
-        setTimeout(() => setSuccess(false), 2000);
+        setTimeout(() => setSuccess(false), 200);
         return;
-      } else {
+      }
+      else {
         alert("Gửi thất bại, vui lòng thử lại!");
       }
-    } catch (error) {
-      console.error("Submit error:", error);
-      alert("Lỗi hệ thống, vui lòng thử lại sau!");
+    } catch (err) {
+      alert("Lỗi hệ thống!");
     }
 
     setLoading(false);
   };
 
+
+  /** ==========================
+   * UI
+   =========================== */
   return (
     <>
-      {/* ===== LOADING OVERLAY ===== */}
       {loading && (
         <div className="loading-overlay">
           <div className="loader"></div>
@@ -165,7 +128,6 @@ export default function BookingForm({
         </div>
       )}
 
-      {/* ===== POPUP SUCCESS ===== */}
       {success && (
         <div className="success-popup">
           <div className="success-box">
@@ -181,27 +143,43 @@ export default function BookingForm({
           <div className="card">
             <p>{t("booking.intro")}</p>
 
-            <form id="bookingForm" className="booking-form" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="booking-form">
 
-              {/* ===== USER INFO ===== */}
+              {/* === THÔNG TIN KHÁCH === */}
               <div className="form-row-3">
                 <div>
-                  <label htmlFor="fullName">{t("booking.fullName")}</label>
-                  <input id="fullName" name="fullName" required />
+                  <label>{t("booking.fullName")}</label>
+                  <input
+                    id="fullName"
+                    name="fullName"
+                    placeholder={t("booking.fullNamePlaceholder")}
+                    required
+                  />
                 </div>
 
                 <div>
-                  <label htmlFor="phone">{t("booking.phone")}</label>
-                  <input id="phone" name="phone" required />
+                  <label>{t("booking.phone")}</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    placeholder={t("booking.phonePlaceholder")}
+                    required
+                  />
                 </div>
 
-                <div>
-                  <label htmlFor="email">{t("booking.email")}</label>
-                  <input id="email" name="email" type="email" required />
+                <div style={{ width: "100%" }}>
+                  <label>{t("booking.email")}</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="example@gmail.com"
+                    required
+                  />
                 </div>
               </div>
 
-              {/* ===== ROUTE ===== */}
+              {/* ROUTE */}
               <select
                 id="route"
                 name="route"
@@ -215,7 +193,7 @@ export default function BookingForm({
                 ))}
               </select>
 
-              {/* ===== CAR TYPE ===== */}
+              {/* CAR TYPE */}
               <select
                 id="carType"
                 name="carType"
@@ -231,19 +209,30 @@ export default function BookingForm({
                 ))}
               </select>
 
-              {/* ===== PICKUP + DROPOFF ===== */}
+              {/* PICKUP - DROPOFF */}
               <div className="form-row">
                 <div>
                   <label>{t("booking.pickup")}</label>
-                  <input id="pickupPlace" name="pickupPlace" required />
+                  <input
+                    id="pickupPlace"
+                    name="pickupPlace"
+                    placeholder={t("booking.pickupPlaceholder")}
+                    required
+                  />
                 </div>
+
                 <div>
                   <label>{t("booking.dropoff")}</label>
-                  <input id="dropoffPlace" name="dropoffPlace" required />
+                  <input
+                    id="dropoffPlace"
+                    name="dropoffPlace"
+                    placeholder={t("booking.dropoffPlaceholder")}
+                    required
+                  />
                 </div>
               </div>
 
-              {/* ===== PASSENGERS ===== */}
+              {/* PASSENGERS */}
               <div className="form-row">
                 <div>
                   <label>{t("booking.adult")}</label>
@@ -264,7 +253,7 @@ export default function BookingForm({
                 </div>
               </div>
 
-              {/* ===== DATE + TIME ===== */}
+              {/* DATE TIME */}
               <div className="form-row">
                 <div>
                   <label>{t("booking.date")}</label>
@@ -277,14 +266,18 @@ export default function BookingForm({
                 </div>
               </div>
 
-              {/* ===== ROUND TRIP ===== */}
+              {/* ROUNDTRIP */}
               <div className="form-row-roundtrip">
                 <div className="switch-wrap">
                   <label className="switch">
-                    <input type="checkbox" checked={roundTrip} onChange={(e) => setRoundTrip(e.target.checked)} />
+                    <input
+                      type="checkbox"
+                      checked={roundTrip}
+                      onChange={(e) => setRoundTrip(e.target.checked)}
+                    />
                     <span className="slider"></span>
                   </label>
-                  <span className="switch-label">{t("booking.roundTrip")}</span>
+                  <span>{t("booking.roundTrip")}</span>
                 </div>
 
                 {route && carType && (
@@ -296,27 +289,28 @@ export default function BookingForm({
                 )}
               </div>
 
-              {/* ===== RETURN DATE ===== */}
+              {/* RETURN TRIP */}
               {roundTrip && (
                 <div className="form-row">
                   <div>
                     <label>{t("booking.returnDate")}</label>
-                    <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} required />
+                    <input type="date" required value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
                   </div>
+
                   <div>
                     <label>{t("booking.returnTime")}</label>
-                    <input type="time" value={returnTime} onChange={(e) => setReturnTime(e.target.value)} required />
+                    <input type="time" required value={returnTime} onChange={(e) => setReturnTime(e.target.value)} />
                   </div>
                 </div>
               )}
 
-              {/* ===== NOTE ===== */}
+              {/* NOTES */}
               <div>
                 <label>{t("booking.note")}</label>
-                <textarea id="note" name="note" />
+                <textarea id="note" name="note" placeholder={t("booking.notePlaceholder")} />
               </div>
 
-              <button type="submit" className="btn-primary">
+              <button className="btn-primary" type="submit">
                 ✉ {t("booking.submit")}
               </button>
 
