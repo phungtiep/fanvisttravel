@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // PATCH >>>> thêm props
-export default function BookingForm({ defaultRouteCode = "", defaultCarType = "" }) {
+export default function BookingForm({ defaultRouteCode = "", defaultCarType = "", onSuccess = () => {} }) {
 // <<<< PATCH
 
   const { t, i18n } = useTranslation();
@@ -212,6 +212,7 @@ export default function BookingForm({ defaultRouteCode = "", defaultCarType = ""
       if (result.status === "ok") {
         setSuccess(true);
         form.reset();
+        onSuccess();
         setTimeout(() => setSuccess(false), 2000);
       } else {
         alert("Gửi thất bại, vui lòng thử lại!");

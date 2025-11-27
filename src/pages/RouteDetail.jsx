@@ -156,6 +156,7 @@ export default function RouteDetail() {
                         <BookingForm
                             defaultRouteCode={selectedRouteCode}
                             defaultCarType={selectedCarType}
+                            onSuccess={() => setShowBooking(false)} 
                         />
                     </div>
                 </div>
