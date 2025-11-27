@@ -270,7 +270,7 @@ export default function Header() {
 
         {/* Nút mở panel tuyến đường trên mobile */}
         <button onClick={() => setShowRoutesMobile(true)}>
-          {t("nav.pricing")} & {t("nav.routes")}
+          {t("nav.pricing")}
         </button>
 
         <button onClick={() => goToSection("faq")}>{t("nav.faq")}</button>
