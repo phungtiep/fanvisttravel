@@ -1054,3 +1054,9 @@ textarea:focus {
   font-weight: 600;
   color: #2f8f6d;
 }
+.modal-open {
+  overflow: hidden !important;
+  height: 100% !important;
+  position: fixed !important;
+  width: 100%;
+}
