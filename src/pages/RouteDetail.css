@@ -35,57 +35,41 @@
 /* ===============================
    CARD
 ================================ */
-/* PURPLE LUXURY GRADIENT BORDER */
+/* Gradient border */
 .rd-card {
-    position: relative;
-    border-radius: 22px;
-    padding: 2px; /* độ dày viền gradient */
-    background: linear-gradient(
-        135deg,
-        #b16cea,
-        #8e2de2,
-        #4e54c8
-    );
-    transition: 0.25s ease;
+  position: relative;
+  border-radius: 22px;
+  padding: 2px;
+  background: linear-gradient(135deg, #b16cea, #8e2de2, #4e54c8);
+  transition: 0.25s ease;
 }
 
-/* INNER CARD (nội dung bên trong) */
 .rd-card > * {
-    background: #ffffff;
-    border-radius: 20px;
+  background: #ffffff;
+  border-radius: 20px;
 }
-
 
 .rd-card:hover {
-    background: linear-gradient(
-        135deg,
-        #c084fc,
-        #a855f7,
-        #6d28d9
-    );
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
-    transform: translateY(-4px);
+  background: linear-gradient(135deg, #c084fc, #a855f7, #6d28d9);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
 }
 
-
-
-
-
-/* IMAGE AREA */
+/* IMAGE */
 .rd-img-box {
-    width: 100%;
-    height: 280px; /* tăng chiều cao hình */
-    overflow: hidden;
-    border-radius: 18px 18px 0 0; /* bo góc giống card */
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 18px 18px 0 0;
 }
 
 .rd-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: 0.25s ease;
 }
-
 
 .rd-card:hover .rd-img {
   transform: scale(1.05);
@@ -98,117 +82,100 @@
 
 /* NAME */
 .rd-car-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #0F1D40; /* navy sang */
-    margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0F1D40;
+  margin: 0 0 6px;
 }
 
-
-
+/* PRICE */
 .rd-price-text {
-    font-size: 22px;
-    font-weight: 900;
-    color: #0A8F4A; /* green premium */
-    margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 900;
+  color: #0A8F4A;
+  margin: 0 0 12px;
 }
 
-
-
-
+/* PRICE INFO */
 .rd-price-info {
-    font-size: 14px;
-    line-height: 1.45;
-    background: #f8fafc;
-    border: 1px solid #edf2f7;
-    padding: 12px 14px;
-    color: #333;
-    border-radius: 12px;
-    margin-bottom: 18px;
+  font-size: 14px;
+  line-height: 1.45;
+  background: #f8fafc;
+  border: 1px solid #edf2f7;
+  padding: 12px 14px;
+  color: #333;
+  border-radius: 12px;
+  margin-bottom: 18px;
 }
 
-
-
-
+/* BOOK BUTTON */
 .btn-book-elegant {
-    width: 100%;
-    padding: 12px 0;
-    border-radius: 12px;
-    font-size: 17px;
-    font-weight: 700;
-    background: #2F6BFF;
-    color: #fff;
-    border: none;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2F6BFF, #5C9CFF);
+  color: #fff;
+  border: none;
+  transition: 0.2s ease;
 }
 
 .btn-book-elegant:hover {
-    background: linear-gradient(135deg, #1C54F8, #5C9CFF);
-    transform: translateY(-1px);
+  background: linear-gradient(135deg, #1C54F8, #4A84FF);
+  transform: translateY(-1px);
 }
-
 
 /* ===============================
-   POPUP – BACKDROP
+   POPUP SYSTEM (FIX ALL BUGS)
 ================================ */
-.popup-container {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-}
 
-.popup-overlay {
-  position: absolute;
+/* Overlay + centering container */
+.popup-container {
+  position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  /* nền mờ */
+  background: rgba(0,0,0,0.45);
   backdrop-filter: blur(4px);
 }
 
-/* ===============================
-   POPUP CARD
-================================ */
+/* Remove old overlay to avoid double-blur */
+.popup-overlay {
+  display: none !important;
+}
+
+/* Popup card */
 .popup-card {
-    width: 100%;
-    max-width: 480px; /* desktop đẹp */
-    max-height: 90vh;
-    background: #fff;
-    border-radius: 22px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    animation: popupShow 0.25s ease;
-}
+  position: relative;
+  width: 90%;
+  max-width: 480px;
+  max-height: 90vh;
 
-/* Animation */
-@keyframes popupSlideUp {
-    from { transform: translateY(100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
+  background: #fff;
+  border-radius: 22px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 
-/* SCROLL ONLY POPUP, NOT PAGE */
-.popup-card::-webkit-scrollbar {
-  width: 8px;
-}
-
-.popup-card::-webkit-scrollbar-thumb {
-  background: #aab1bb;
-  border-radius: 8px;
+  animation: popupShow 0.25s ease;
+  z-index: 10;
 }
 
 /* HEADER */
 .popup-header {
-    padding: 18px 22px;
-    border-bottom: 1px solid #eee;
-    font-size: 20px;
-    font-weight: 700;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid #eee;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .popup-header h2 {
@@ -220,76 +187,63 @@
 
 /* CLOSE BUTTON */
 .popup-close {
-    font-size: 26px;
-    cursor: pointer;
+  font-size: 30px;
+  cursor: pointer;
+  color: #333;
 }
 
-.popup-close:hover {
-  color: #000;
+.popup-close:active {
+  transform: scale(0.9);
 }
 
-/* BODY */
+/* BODY SCROLL */
 .popup-body {
-    overflow-y: auto;
-    padding: 20px 22px;
-    flex: 1;
-    -webkit-overflow-scrolling: touch;
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 22px;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* ===== FIX INPUT ===== */
+/* Prevent form overflow */
 .booking-form input,
 .booking-form select,
 .booking-form textarea {
-    width: 100% !important;
-    box-sizing: border-box;
+  width: 100% !important;
+  box-sizing: border-box;
 }
 
-/* Prevent horizontal overflow */
 .booking-form {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
-/* POPUP ANIMATION */
-@keyframes popupFadeIn {
+
+/* ANIMATION */
+@keyframes popupShow {
   from {
-    transform: translateY(20px) scale(0.96);
+    transform: translateY(20px);
     opacity: 0;
   }
-
   to {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
-@keyframes popupShow {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* ===== MOBILE FULLSCREEN FIX ===== */
+/* MOBILE FULLSCREEN FIX */
 @media (max-width: 480px) {
-    .popup-card {
-        width: 100%;
-        height: 100%;
-        max-width: none;
-        max-height: none;
-        border-radius: 0; /* mobile full screen */
-    }
+  .popup-card {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+  }
 
-    .popup-body {
-        padding-bottom: 100px; /* chống overlay bàn phím Android */
-    }
+  .popup-body {
+    padding-bottom: 120px; /* tránh bàn phím che form */
+  }
 }
 
-/* ===============================
-   NOT FOUND
-================================ */
+/* NOT FOUND */
 .rd-notfound {
   text-align: center;
   padding: 80px 0;
