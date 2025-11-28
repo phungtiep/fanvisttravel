@@ -36,18 +36,26 @@
    CARD
 ================================ */
 .rd-card {
+    position: relative;
+    border-radius: 22px;
+    padding: 2px; /* viền gradient */
+    background: linear-gradient(135deg, #3c7bff, #6bd5ff);
+    transition: 0.25s ease;
+}
+
+/* INNER CARD CONTENT */
+.rd-card > * {
     background: #ffffff;
     border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid #eef0f3;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
-    transition: 0.2s ease;
+    padding-bottom: 20px;
 }
 
 .rd-card:hover {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    transform: translateY(-3px);
+    background: linear-gradient(135deg, #1d6bff, #66e0ff);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 26px rgba(0,0,0,0.08);
 }
+
 
 
 
@@ -82,7 +90,7 @@
 
 /* CARD BODY */
 .rd-card-body {
-  padding: 18px 22px 25px;
+  padding: 18px 22px 10px;
 }
 
 /* NAME */
