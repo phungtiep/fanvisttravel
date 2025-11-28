@@ -128,18 +128,26 @@ export default function RouteDetail() {
 
             {/* BOOKING POPUP */}
             {showBooking && (
-                <div className="booking-popup">
-                    <div className="booking-overlay" onClick={() => setShowBooking(false)}></div>
+                <div className="popup-container">
+                    <div className="popup-overlay" onClick={() => setShowBooking(false)} />
 
-                    <div className="booking-box popup-animate">
-                        <BookingForm
-                            defaultRouteCode={selectedRouteCode}
-                            defaultCarType={selectedCarType}
-                            onSuccess={() => setShowBooking(false)}
-                        />
+                    <div className="popup-card popup-animate">
+                        <div className="popup-header">
+                            <h2>Đặt xe nhanh</h2>
+                        </div>
+
+                        <div className="popup-body">
+                            <BookingForm
+                                defaultRouteCode={selectedRouteCode}
+                                defaultCarType={selectedCarType}
+                                onSuccess={() => setShowBooking(false)}
+                            />
+                        </div>
                     </div>
                 </div>
             )}
+
+
 
         </div>
     );
