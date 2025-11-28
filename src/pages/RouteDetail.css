@@ -37,31 +37,36 @@
 ================================ */
 .rd-card {
     background: #ffffff;
-    border-radius: 22px; 
+    border-radius: 20px;
     overflow: hidden;
-    padding-bottom: 18px;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.08);     /* shadow đẹp hơn */
-    border: 1px solid #f1f3f6;                   /* tạo chiều sâu nhưng tinh tế */
-    transition: 0.25s ease;
+    border: 1px solid #eef0f3;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    transition: 0.2s ease;
 }
 
 .rd-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.12);     /* nổi bật mạnh hơn khi hover */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
 }
+
 
 
 /* IMAGE AREA */
 .rd-img-box {
-  width: 100%;
-  height: 260px;
-  /* tăng chiều cao ảnh */
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f8f9fc;
+    width: 100%;
+    height: 260px;
+    background: #f5f6f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.rd-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* đẹp nhất */
+}
+
 
 .rd-img {
   width: 100%;
@@ -82,44 +87,47 @@
 
 /* NAME */
 .rd-car-title {
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 800;
-    color: #0F1D40;          /* navy đậm sang */
-    margin-bottom: 4px;      /* giảm khoảng cách */
+    color: #0F1D40; /* navy sang */
+    margin: 0 0 6px;
 }
+
 
 
 .rd-price-text {
-    font-size: 24px;             /* vừa phải */
-    font-weight: 900;            /* cực đậm – premium */
-    margin-top: 0;
-    margin-bottom: 10px;         /* giảm từ 14px */
-    color: #0BA360;              /* emerald green sang */
-    letter-spacing: -0.5px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #0A8F4A; /* green premium */
+    margin: 0 0 12px;
 }
+
 
 
 
 .rd-price-info {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.45;
-    padding: 10px 14px;
-    background: #F5F7FA;
+    background: #f8fafc;
+    border: 1px solid #edf2f7;
+    padding: 12px 14px;
+    color: #333;
     border-radius: 12px;
-    margin-bottom: 16px;
-    border: 1px solid #E3E6EB;
+    margin-bottom: 18px;
 }
 
 
 
+
 .btn-book-elegant {
-    background: linear-gradient(135deg, #2E64FF, #6BA4FF);
+    width: 100%;
+    padding: 12px 0;
+    border-radius: 12px;
     font-size: 17px;
     font-weight: 700;
-    padding: 13px 0;
-    border-radius: 14px;
-    letter-spacing: 0.3px;
-    box-shadow: 0 4px 16px rgba(0, 90, 255, 0.25);
+    background: #2F6BFF;
+    color: #fff;
+    border: none;
 }
 
 .btn-book-elegant:hover {
