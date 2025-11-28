@@ -108,7 +108,7 @@ export default function RouteDetail() {
                                 </div>
 
                                 <div className="rd-price-info">
-                                    ✔ Giá 1 chiều đã bao gồm phí cầu đường  
+                                    ✔ Giá 1 chiều đã bao gồm phí cầu đường
                                     <br /> ✖ Chưa bao gồm thuế VAT
                                 </div>
 
@@ -131,12 +131,12 @@ export default function RouteDetail() {
             {/* BOOKING POPUP */}
             {showBooking && (
                 <div className="popup-container">
-                    <div className="popup-overlay" onClick={() => setShowBooking(false)} />
 
                     <div className="popup-card popup-animate">
+
                         <div className="popup-header">
-                            <h2>Đặt xe nhanh</h2>
-                            <button className="popup-close" onClick={() => setShowBooking(false)}>×</button>
+                            <span>Đặt xe nhanh</span>
+                            <span className="popup-close" onClick={() => setShowBooking(false)}>✕</span>
                         </div>
 
                         <div className="popup-body">
@@ -146,9 +146,11 @@ export default function RouteDetail() {
                                 onSuccess={() => setShowBooking(false)}
                             />
                         </div>
+
                     </div>
                 </div>
             )}
+
         </div>
     );
 }

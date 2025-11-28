@@ -151,13 +151,18 @@
    POPUP – BACKDROP
 ================================ */
 .popup-container {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0;
+    z-index: 9999;
 }
 
 .popup-overlay {
@@ -171,15 +176,19 @@
    POPUP CARD
 ================================ */
 .popup-card {
-  position: relative;
-  width: 92%;
-  max-width: 720px;
-  max-height: 88vh;
-  background: #ffffff;
-  border-radius: 22px;
-  overflow-y: auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-  animation: popupFadeIn 0.35s ease forwards;
+    width: 100%;
+    max-width: 420px; /* SUPER IMPORTANT */
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    animation: popupSlideUp 0.25s ease;
+}
+
+/* Animation */
+@keyframes popupSlideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 /* SCROLL ONLY POPUP, NOT PAGE */
@@ -194,15 +203,13 @@
 
 /* HEADER */
 .popup-header {
-  padding: 20px 26px 10px;
-  position: sticky;
-  top: 0;
-  background: #ffffff;
-  border-bottom: 1px solid #f1f5f9;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    padding: 16px 22px;
+    border-bottom: 1px solid #eee;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .popup-header h2 {
@@ -214,12 +221,8 @@
 
 /* CLOSE BUTTON */
 .popup-close {
-  background: none;
-  border: none;
-  font-size: 30px;
-  line-height: 1;
-  cursor: pointer;
-  color: #5c6675;
+    font-size: 26px;
+    cursor: pointer;
 }
 
 .popup-close:hover {
@@ -228,9 +231,29 @@
 
 /* BODY */
 .popup-body {
-  padding: 20px 28px 32px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding: 16px 20px 30px;
 }
 
+/* ===== FIX FORM WIDTH ===== */
+.popup-body * {
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+/* ===== FIX INPUT ===== */
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+/* Prevent horizontal overflow */
+.booking-form {
+    overflow-x: hidden;
+}
 /* POPUP ANIMATION */
 @keyframes popupFadeIn {
   from {
