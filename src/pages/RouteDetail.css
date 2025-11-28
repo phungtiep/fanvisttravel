@@ -35,26 +35,38 @@
 /* ===============================
    CARD
 ================================ */
+/* PURPLE LUXURY GRADIENT BORDER */
 .rd-card {
     position: relative;
     border-radius: 22px;
-    padding: 2px; /* viền gradient */
-    background: linear-gradient(135deg, #3c7bff, #6bd5ff);
+    padding: 2px; /* độ dày viền gradient */
+    background: linear-gradient(
+        135deg,
+        #b16cea,
+        #8e2de2,
+        #4e54c8
+    );
     transition: 0.25s ease;
 }
 
-/* INNER CARD CONTENT */
+/* INNER CARD (nội dung bên trong) */
 .rd-card > * {
     background: #ffffff;
     border-radius: 20px;
-    padding-bottom: 20px;
 }
 
+
 .rd-card:hover {
-    background: linear-gradient(135deg, #1d6bff, #66e0ff);
+    background: linear-gradient(
+        135deg,
+        #c084fc,
+        #a855f7,
+        #6d28d9
+    );
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
     transform: translateY(-4px);
-    box-shadow: 0 8px 26px rgba(0,0,0,0.08);
 }
+
 
 
 
@@ -90,7 +102,7 @@
 
 /* CARD BODY */
 .rd-card-body {
-  padding: 18px 22px 10px;
+  padding: 20px 22px 14px;
 }
 
 /* NAME */
