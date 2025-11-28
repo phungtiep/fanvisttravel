@@ -114,22 +114,26 @@ export default function RouteDetail() {
                                     />
                                 </div>
 
-                                <div className="rd-car-name">{car.name_vi}</div>
+                                <div className="rd-card-body">
+                                    <h3 className="rd-car-title">{car.name_vi}</h3>
 
-                                <div className="rd-price">{formatPrice(price)}</div>
+                                    <div className="rd-price-text">
+                                        {price?.toLocaleString("vi-VN")} đ
+                                    </div>
 
-                                <button
-                                    className="btn-book-premium"
-                                    onClick={() => {
-                                        setSelectedRouteCode(route.code);
-                                        setSelectedCarType(car.code);  // << ✔ CHUẨN
-                                        setShowBooking(true);
-                                    }}
-                                >
-                                    <span className="car-icon">🚘</span>
-                                    Đặt Xe Ngay
-                                </button>
+                                    <button
+                                        className="btn-book-elegant"
+                                        onClick={() => {
+                                            setSelectedRouteCode(route.code);
+                                            setSelectedCarType(car.code);
+                                            setShowBooking(true);
+                                        }}
+                                    >
+                                        <span>🚘</span> Đặt Xe Ngay
+                                    </button>
+                                </div>
                             </div>
+
                         );
                     })}
                 </div>
@@ -157,7 +161,7 @@ export default function RouteDetail() {
                         <BookingForm
                             defaultRouteCode={selectedRouteCode}
                             defaultCarType={selectedCarType}
-                            onSuccess={() => setShowBooking(false)} 
+                            onSuccess={() => setShowBooking(false)}
                         />
                     </div>
                 </div>
