@@ -74,7 +74,7 @@ export default function RouteDetail() {
 
       {/* PAGE TITLE */}
       <h1 className="rd-title">{route.name}</h1>
-      <p className="rd-subtitle">Bảng giá & các loại xe áp dụng</p>
+      <p className="rd-subtitle">Bảng giá 1 chiều & các loại xe áp dụng</p>
 
       {/* GRID */}
       <div className="rd-grid">
