@@ -249,3 +249,83 @@
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+/* Overlay nền tối sang trọng */
+.popup-container {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
+
+.popup-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* CARD trắng premium */
+.popup-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: min(92%, 540px);
+  max-height: 90vh;
+
+  background: #ffffff;
+  border-radius: 28px;
+
+  box-shadow: 
+    0 20px 45px rgba(0,0,0,0.18),
+    0 0 0 1px rgba(255,255,255,0.7) inset;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header cố định trên */
+.popup-header {
+  padding: 20px 28px;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  background: #ffffffee;
+  backdrop-filter: blur(4px);
+}
+
+.popup-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #141e28;
+}
+
+/* Nội dung scroll */
+.popup-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+}
+
+/* Animation popup */
+.popup-animate {
+  opacity: 0;
+  transform: translate(-50%, -46%) scale(0.94);
+  animation: popupIn 0.28s ease forwards;
+}
+
+@keyframes popupIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
