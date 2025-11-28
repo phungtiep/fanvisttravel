@@ -109,7 +109,9 @@ export default function RouteDetail() {
                                 <div className="rd-price-text">
                                     {price?.toLocaleString("vi-VN")} đ
                                 </div>
-
+                                <div className="rd-price-info">
+                                    ✔ Giá 1 chiều đã bao gồm phí cầu đường, chưa bao gồm thuế VAT
+                                </div>
                                 <button
                                     className="btn-book-elegant"
                                     onClick={() => {
