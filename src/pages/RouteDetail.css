@@ -36,17 +36,20 @@
    CARD
 ================================ */
 .rd-card {
-  background: #ffffff;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-  transition: 0.25s ease;
+    background: #ffffff;
+    border-radius: 22px; 
+    overflow: hidden;
+    padding-bottom: 18px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);     /* shadow đẹp hơn */
+    border: 1px solid #f1f3f6;                   /* tạo chiều sâu nhưng tinh tế */
+    transition: 0.25s ease;
 }
 
 .rd-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);     /* nổi bật mạnh hơn khi hover */
 }
+
 
 /* IMAGE AREA */
 .rd-img-box {
@@ -79,46 +82,51 @@
 
 /* NAME */
 .rd-car-title {
-  font-size: 20px;
-  /* giảm từ 22 → 20 */
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-/* PRICE */
-.rd-price-text {
-    font-size: 22px;  /* giảm từ 26 → 22 */
+    font-size: 21px;
     font-weight: 800;
-    margin-bottom: 10px;
+    color: #0F1D40;          /* navy đậm sang */
+    margin-bottom: 4px;      /* giảm khoảng cách */
 }
 
 
-/* PRICE INFO */
+.rd-price-text {
+    font-size: 24px;             /* vừa phải */
+    font-weight: 900;            /* cực đậm – premium */
+    margin-top: 0;
+    margin-bottom: 10px;         /* giảm từ 14px */
+    color: #0BA360;              /* emerald green sang */
+    letter-spacing: -0.5px;
+}
+
+
+
 .rd-price-info {
-    font-size: 13px;          /* giảm từ 14 → 13 */
-    padding: 10px 12px;       /* thu nhỏ box */
-    border-radius: 10px;
-    margin-bottom: 16px;      /* ít khoảng cách hơn */
+    font-size: 13px;
+    line-height: 1.45;
+    padding: 10px 14px;
+    background: #F5F7FA;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #E3E6EB;
 }
 
 
-/* BUTTON */
+
 .btn-book-elegant {
-  width: 100%;
-  padding: 14px 0;
-  font-size: 18px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #1d72ff, #5ca8ff);
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: 0.2s;
+    background: linear-gradient(135deg, #2E64FF, #6BA4FF);
+    font-size: 17px;
+    font-weight: 700;
+    padding: 13px 0;
+    border-radius: 14px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 16px rgba(0, 90, 255, 0.25);
 }
 
 .btn-book-elegant:hover {
-  background: linear-gradient(135deg, #165dee, #4c9aff);
+    background: linear-gradient(135deg, #1C54F8, #5C9CFF);
+    transform: translateY(-1px);
 }
+
 
 /* ===============================
    POPUP – BACKDROP
