@@ -2,221 +2,226 @@
    PAGE CONTAINER
 ================================ */
 .rd-container {
-    max-width: 1180px;
-    margin: 40px auto 80px;
-    padding: 0 20px;
+  max-width: 1180px;
+  margin: 40px auto 80px;
+  padding: 0 20px;
 }
 
 /* TITLE */
 .rd-title {
-    font-size: 36px;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 8px;
-    color: #0d1b2a;
+  font-size: 36px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 8px;
+  color: #0d1b2a;
 }
 
 .rd-subtitle {
-    font-size: 17px;
-    text-align: center;
-    color: #556072;
-    margin-bottom: 40px;
+  font-size: 17px;
+  text-align: center;
+  color: #556072;
+  margin-bottom: 40px;
 }
 
 /* ===============================
    GRID
 ================================ */
 .rd-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-    gap: 28px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 28px;
 }
 
 /* ===============================
    CARD
 ================================ */
 .rd-card {
-    background: #ffffff;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-    transition: 0.25s ease;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: 0.25s ease;
 }
 
 .rd-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10);
 }
 
 /* IMAGE AREA */
 .rd-img-box {
-    width: 100%;
-    height: 210px;
-    overflow: hidden;
+  width: 100%;
+  height: 260px;
+  /* tăng chiều cao ảnh */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f9fc;
 }
 
 .rd-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: 0.4s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  /* giữ nguyên tỷ lệ xe, không zoom */
+  padding: 10px;
 }
 
 .rd-card:hover .rd-img {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* CARD BODY */
 .rd-card-body {
-    padding: 18px 22px 25px;
+  padding: 18px 22px 25px;
 }
 
 /* NAME */
 .rd-car-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #0d1b2a;
-    margin-bottom: 6px;
+  font-size: 20px;
+  /* giảm từ 22 → 20 */
+  font-weight: 700;
+  margin-bottom: 6px;
 }
 
 /* PRICE */
 .rd-price-text {
-    font-size: 26px;
+    font-size: 22px;  /* giảm từ 26 → 22 */
     font-weight: 800;
-    color: #1a8f4f;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
+
 
 /* PRICE INFO */
 .rd-price-info {
-    font-size: 14px;
-    line-height: 1.45;
-    color: #39414a;
-    background: #f7fafc;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid #edf2f7;
-    margin-bottom: 18px;
+    font-size: 13px;          /* giảm từ 14 → 13 */
+    padding: 10px 12px;       /* thu nhỏ box */
+    border-radius: 10px;
+    margin-bottom: 16px;      /* ít khoảng cách hơn */
 }
+
 
 /* BUTTON */
 .btn-book-elegant {
-    width: 100%;
-    padding: 14px 0;
-    font-size: 18px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #1d72ff, #5ca8ff);
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    transition: 0.2s;
+  width: 100%;
+  padding: 14px 0;
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #1d72ff, #5ca8ff);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .btn-book-elegant:hover {
-    background: linear-gradient(135deg, #165dee, #4c9aff);
+  background: linear-gradient(135deg, #165dee, #4c9aff);
 }
 
 /* ===============================
    POPUP – BACKDROP
 ================================ */
 .popup-container {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
 }
 
 .popup-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(4px);
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
 }
 
 /* ===============================
    POPUP CARD
 ================================ */
 .popup-card {
-    position: relative;
-    width: 92%;
-    max-width: 720px;
-    max-height: 88vh;
-    background: #ffffff;
-    border-radius: 22px;
-    overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-    animation: popupFadeIn 0.35s ease forwards;
+  position: relative;
+  width: 92%;
+  max-width: 720px;
+  max-height: 88vh;
+  background: #ffffff;
+  border-radius: 22px;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  animation: popupFadeIn 0.35s ease forwards;
 }
 
 /* SCROLL ONLY POPUP, NOT PAGE */
 .popup-card::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
+
 .popup-card::-webkit-scrollbar-thumb {
-    background: #aab1bb;
-    border-radius: 8px;
+  background: #aab1bb;
+  border-radius: 8px;
 }
 
 /* HEADER */
 .popup-header {
-    padding: 20px 26px 10px;
-    position: sticky;
-    top: 0;
-    background: #ffffff;
-    border-bottom: 1px solid #f1f5f9;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  padding: 20px 26px 10px;
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .popup-header h2 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 800;
-    color: #0d1b2a;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0d1b2a;
 }
 
 /* CLOSE BUTTON */
 .popup-close {
-    background: none;
-    border: none;
-    font-size: 30px;
-    line-height: 1;
-    cursor: pointer;
-    color: #5c6675;
+  background: none;
+  border: none;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  color: #5c6675;
 }
 
 .popup-close:hover {
-    color: #000;
+  color: #000;
 }
 
 /* BODY */
 .popup-body {
-    padding: 20px 28px 32px;
+  padding: 20px 28px 32px;
 }
 
 /* POPUP ANIMATION */
 @keyframes popupFadeIn {
-    from {
-        transform: translateY(20px) scale(0.96);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
+  from {
+    transform: translateY(20px) scale(0.96);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 /* ===============================
    NOT FOUND
 ================================ */
 .rd-notfound {
-    text-align: center;
-    padding: 80px 0;
-    font-size: 20px;
+  text-align: center;
+  padding: 80px 0;
+  font-size: 20px;
 }
