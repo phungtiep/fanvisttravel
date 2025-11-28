@@ -15,44 +15,38 @@ export default function RouteDetail() {
     const [selectedRouteCode, setSelectedRouteCode] = useState(null);
     const [selectedCarType, setSelectedCarType] = useState(null);
 
+    /* LOCK PAGE SCROLL WHEN POPUP OPEN */
+    useEffect(() => {
+        if (showBooking) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+    }, [showBooking]);
+
+    /* FETCH DATA */
     useEffect(() => {
         async function loadData() {
             try {
                 setLoading(true);
 
-                // Fetch route detail
                 const resRoute = await fetch(`/api/routes?code=${encodeURIComponent(code)}`);
                 const jsonRoute = await resRoute.json();
 
                 if (jsonRoute.route) setRoute(jsonRoute.route);
                 else setError("Không tìm thấy tuyến đường.");
 
-                // Fetch car list
                 const resCars = await fetch("/api/cars");
                 const jsonCars = await resCars.json();
                 setCars(jsonCars.cars || []);
-
             } catch (err) {
                 setError("Lỗi tải dữ liệu.");
             } finally {
                 setLoading(false);
             }
         }
-
         loadData();
     }, [code]);
-
-    useEffect(() => {
-        if (showBooking) {
-            document.documentElement.classList.add("modal-open");
-            document.body.classList.add("modal-open");
-        } else {
-            document.documentElement.classList.remove("modal-open");
-            document.body.classList.remove("modal-open");
-        }
-    }, [showBooking]);
-
-
 
     if (!route) {
         return (
@@ -65,6 +59,7 @@ export default function RouteDetail() {
         );
     }
 
+    /* PRICE MAP */
     const PRICE_FROM_CODE = {
         "4-ch": route.price_4,
         "7-ch": route.price_7,
@@ -83,7 +78,6 @@ export default function RouteDetail() {
 
     return (
         <div className="rd-container">
-
             {/* PAGE TITLE */}
             <h1 className="rd-title">{route.name}</h1>
             <p className="rd-subtitle">Bảng giá 1 chiều & các loại xe áp dụng</p>
@@ -95,6 +89,8 @@ export default function RouteDetail() {
 
                     return (
                         <div className="rd-card" key={car.id}>
+
+                            {/* IMAGE */}
                             <div className="rd-img-box">
                                 <img
                                     src={car.image_url || "/car-placeholder.webp"}
@@ -103,15 +99,19 @@ export default function RouteDetail() {
                                 />
                             </div>
 
+                            {/* INFO */}
                             <div className="rd-card-body">
                                 <h3 className="rd-car-title">{car.name_vi}</h3>
 
                                 <div className="rd-price-text">
                                     {price?.toLocaleString("vi-VN")} đ
                                 </div>
+
                                 <div className="rd-price-info">
-                                    ✔ Giá 1 chiều đã bao gồm phí cầu đường, chưa bao gồm thuế VAT
+                                    ✔ Giá 1 chiều đã bao gồm phí cầu đường  
+                                    <br /> ✖ Chưa bao gồm thuế VAT
                                 </div>
+
                                 <button
                                     className="btn-book-elegant"
                                     onClick={() => {
@@ -120,7 +120,7 @@ export default function RouteDetail() {
                                         setShowBooking(true);
                                     }}
                                 >
-                                    <span>🚘</span> Đặt Xe Ngay
+                                    🚗 Đặt Xe Ngay
                                 </button>
                             </div>
                         </div>
@@ -136,6 +136,7 @@ export default function RouteDetail() {
                     <div className="popup-card popup-animate">
                         <div className="popup-header">
                             <h2>Đặt xe nhanh</h2>
+                            <button className="popup-close" onClick={() => setShowBooking(false)}>×</button>
                         </div>
 
                         <div className="popup-body">
@@ -148,9 +149,6 @@ export default function RouteDetail() {
                     </div>
                 </div>
             )}
-
-
-
         </div>
     );
 }
