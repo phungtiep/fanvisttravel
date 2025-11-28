@@ -152,16 +152,12 @@
 ================================ */
 .popup-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.55);
+    inset: 0;
+    background: rgba(0,0,0,0.45);
     backdrop-filter: blur(4px);
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: flex-end;
-    padding: 0;
     z-index: 9999;
 }
 
@@ -177,12 +173,15 @@
 ================================ */
 .popup-card {
     width: 100%;
-    max-width: 420px; /* SUPER IMPORTANT */
+    max-width: 480px; /* desktop đẹp */
+    max-height: 90vh;
     background: #fff;
-    border-radius: 20px 20px 0 0;
+    border-radius: 22px;
     overflow: hidden;
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-    animation: popupSlideUp 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    animation: popupShow 0.25s ease;
 }
 
 /* Animation */
@@ -203,7 +202,7 @@
 
 /* HEADER */
 .popup-header {
-    padding: 16px 22px;
+    padding: 18px 22px;
     border-bottom: 1px solid #eee;
     font-size: 20px;
     font-weight: 700;
@@ -231,15 +230,10 @@
 
 /* BODY */
 .popup-body {
-    max-height: calc(100vh - 120px);
     overflow-y: auto;
-    padding: 16px 20px 30px;
-}
-
-/* ===== FIX FORM WIDTH ===== */
-.popup-body * {
-    max-width: 100% !important;
-    box-sizing: border-box;
+    padding: 20px 22px;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* ===== FIX INPUT ===== */
@@ -265,6 +259,32 @@
     transform: translateY(0) scale(1);
     opacity: 1;
   }
+}
+
+@keyframes popupShow {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ===== MOBILE FULLSCREEN FIX ===== */
+@media (max-width: 480px) {
+    .popup-card {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        border-radius: 0; /* mobile full screen */
+    }
+
+    .popup-body {
+        padding-bottom: 100px; /* chống overlay bàn phím Android */
+    }
 }
 
 /* ===============================

@@ -131,12 +131,17 @@ export default function RouteDetail() {
             {/* BOOKING POPUP */}
             {showBooking && (
                 <div className="popup-container">
+                    <div className="popup-overlay" onClick={() => setShowBooking(false)} />
 
-                    <div className="popup-card popup-animate">
-
+                    <div className="popup-card">
                         <div className="popup-header">
-                            <span>Đặt xe nhanh</span>
-                            <span className="popup-close" onClick={() => setShowBooking(false)}>✕</span>
+                            <h2>Đặt xe nhanh</h2>
+                            <button
+                                className="popup-close"
+                                onClick={() => setShowBooking(false)}
+                            >
+                                ✕
+                            </button>
                         </div>
 
                         <div className="popup-body">
@@ -146,7 +151,6 @@ export default function RouteDetail() {
                                 onSuccess={() => setShowBooking(false)}
                             />
                         </div>
-
                     </div>
                 </div>
             )}
