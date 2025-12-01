@@ -2,7 +2,7 @@ import { sendTelegram } from "./services/telegram.js";
 import { sendEmail } from "./services/email.js";
 import { sendToSheet } from "./services/googleSheet.js";
 import { confirmEmail } from "./services/comfirmEmail.js";
-import { addBookingToDatabase } from "../api/addBookingDatabase";
+import { addBookingToDatabase } from "./services/addBookingDatabase";
 
 
 export default async function handler(req, res) {
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   try {
 
     // 1) insert data base
-    await addBookingDatabase(data);
+    await addBookingToDatabase(data);
     // 2) Gửi Telegram
     await sendTelegram(data);
 
