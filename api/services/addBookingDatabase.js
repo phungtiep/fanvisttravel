@@ -1,4 +1,4 @@
-import { supabase } from "./lib/superbase.js";
+import { supabase } from "../lib/superbase.js";
 
 
 export async function addBookingToDatabase(data) {
